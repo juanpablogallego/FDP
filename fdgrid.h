@@ -1,5 +1,5 @@
 // Author:	Juan Pablo Gallego Valencia
-// Last update:	May 29th 2015
+// Created:	May 2015
 
 
 #include<iostream>
@@ -20,8 +20,10 @@ class FD_grid{
 	void set_param(double initial_node, double final_node, int num_nodes);		// set the parameters of the grid
 	void set_param(double initial_node, double final_node, double node_space);	// set the parameters of the grid
 	void set_nodes(void);								// set the nodes of the grid
+	void set_nodes(std::vector<double>);
 	int get_num_nodes(void);
 	void get_nodes(std::vector<double>&);						// get the nodes
+	void move_nodes(std::vector<double>);
 };
 
 
@@ -81,10 +83,22 @@ void FD_grid::set_nodes(void) // create a 1d vector of nodes based on number of 
 	num_nodes=nodes.size();
 };
 
+void FD_grid::set_nodes(std::vector<double> v) // create a 1d vector of nodes based on number of nodes or space between them
+{
+	nodes=v;
+};
+
 int FD_grid::get_num_nodes(){ // return the number of nodes of a 1d grid
 	return num_nodes;
 };
 
 void FD_grid::get_nodes(std::vector<double> &v){	// return a vector containing the 1d nodes of a grid
 	v=nodes;
+};
+
+void FD_grid::move_nodes(std::vector<double> dn){
+	for(unsigned int i=0;i++;i<=nodes.size())
+	{
+		nodes[i]+=dn[i];
+	}
 };
