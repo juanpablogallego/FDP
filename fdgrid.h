@@ -13,6 +13,10 @@ class FD_grid{
 	double final_node;		// where to end the grid
 	double node_space; 		// when zero use num_nodes
 	std::vector<double> nodes;	// vector with the nodes
+	struct cell{
+		unsigned int dim, num_corners;
+		std::vector<vector<double>> corners;
+		};
    public:
 	FD_grid(void);
 	FD_grid(double,double,int);
@@ -102,3 +106,4 @@ void FD_grid::move_nodes(std::vector<double> dn){
 		nodes[i]+=dn[i];
 	}
 };
+
