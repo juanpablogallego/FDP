@@ -15,7 +15,7 @@ class FD_grid{
 	std::vector<double> nodes;	// vector with the nodes
 	struct cell{
 		unsigned int dim, num_corners;
-		std::vector<vector<double>> corners;
+		std::vector<std::vector<double> > corners;
 		};
    public:
 	FD_grid(void);
@@ -101,7 +101,7 @@ void FD_grid::get_nodes(std::vector<double> &v){	// return a vector containing t
 };
 
 void FD_grid::move_nodes(std::vector<double> dn){
-	for(unsigned int i=0;i++;i<=nodes.size())
+	for(unsigned int i=0;i<=nodes.size();i++)
 	{
 		nodes[i]+=dn[i];
 	}
