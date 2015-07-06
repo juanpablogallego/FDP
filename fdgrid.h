@@ -13,10 +13,11 @@ class FD_grid{
 	double final_node;		// where to end the grid
 	double node_space; 		// when zero use num_nodes
 	std::vector<double> nodes;	// vector with the nodes
-	struct cell{
+	std::vector<std::vector<double> > nodes2d, nodes3d; // Objects storing nodes in 2 and 3 dimentions
+/*	struct cell{
 		unsigned int dim, num_corners;
 		std::vector<std::vector<double> > corners;
-		};
+		};//*/
    public:
 	FD_grid(void);
 	FD_grid(double,double,int);
@@ -27,6 +28,8 @@ class FD_grid{
 	void set_nodes(std::vector<double>);
 	int get_num_nodes(void);
 	void get_nodes(std::vector<double>&);						// get the nodes
+	void get_nodes(std::vector< std::vector<double> >&, int);						// get the nodes
+	void create_multid_nodes(int);
 	void move_nodes(std::vector<double>);
 };
 
@@ -99,6 +102,56 @@ int FD_grid::get_num_nodes(){ // return the number of nodes of a 1d grid
 void FD_grid::get_nodes(std::vector<double> &v){	// return a vector containing the 1d nodes of a grid
 	v=nodes;
 };
+
+
+void FD_grid::get_nodes(std::vector<std::vector<double> > &v, int d){	// return a vector containing the 1d nodes of a grid
+	switch(d)
+	{
+		case 2:
+			v=nodes2d;
+			break;
+		case 3:
+			v=nodes3d;
+			break;
+		default:
+			std::cout<< " \n ------ Not a valid dimension (so far) ------ \n";
+	}
+};
+
+void FD_grid::create_multid_nodes(int des_dim){
+	//switch (des_dim)
+	if(des_dim==2){
+		//case 2:
+			std::vector<double> entry2(2);
+			for(unsigned int i=0;i<nodes.size();i++)
+			{
+				for(unsigned int j=0;j<nodes.size();j++)
+				{
+					entry2[0] = nodes[j]; entry2[1]= nodes[i];
+					nodes2d.push_back(entry2);
+				}
+			}
+			}//break;
+		else if(des_dim==3){//case 3:
+			std::vector<double> entry3(3);
+			for(unsigned int i=0;i<nodes.size();i++)
+			{
+				for(unsigned int j=0;j<nodes.size();j++)
+				{
+					for(unsigned int k=0;k<nodes.size();k++)
+					{
+						entry3[0] = nodes[k]; entry3[1] = nodes[j]; entry3[2] = nodes[i];
+						nodes3d.push_back(entry3);
+					}
+				}
+			}
+			}//break;
+		else{ //default:
+			std::cout<< " \n ------ Not a valid dimension (so far) ------ \n";}
+
+	//}
+};
+	
 
 void FD_grid::move_nodes(std::vector<double> dn){
 	for(unsigned int i=0;i<=nodes.size();i++)
