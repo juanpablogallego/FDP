@@ -67,8 +67,9 @@ void FD_Conservation_Laws::set_ic(vector<double>& x, vector<double>& u0)
 	for(unsigned int i = 0; i < x.size(); i++)
 	//for(vector<double>::iterator i = x.begin(); i != x.end(); i++)
 	{
-		double x0 = -(100*x[i]*x[i]);
-		u0[i] = exp(x0); 
+		double x0 = -100*x[i]*x[i];
+		x0 = exp(x0);
+		u0.push_back(x0);
 	}
 
 };
@@ -82,7 +83,7 @@ InputVector FD_Conservation_Laws::Burgers_1D_Flux(InputVector& u)
 	{
 		number aux=u[i]*u[i]; 		// TODO: Add flux functions for higher dimensions
 		flux.push_back(aux);
-		cout<<"\n \t "<<aux;
+		//cout<<"\n \t "<<aux; //output flux values
 	}
 	return flux;
 };//*/
