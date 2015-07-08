@@ -7,7 +7,8 @@
 
 // One dimensional implementation of a finite difference grid
 
-class FD_grid{
+class FD_grid
+{
 	int num_nodes;		// when zero use node_space
 	double initial_node;	// where to start the grid
 	double final_node;		// where to end the grid
@@ -31,31 +32,34 @@ class FD_grid{
 	void get_nodes(std::vector< std::vector<double> >&, int);						// get the nodes
 	void create_multid_nodes(int);
 	void move_nodes(std::vector<double>);
+//	typedef FD_grid::value_type FD_grid_type;
 };
 
 
-FD_grid::FD_grid(){
-
+FD_grid::FD_grid()
+{
 	num_nodes = 0;		// when zero use node_space
 	initial_node = 0;	// where to start the grid
 	final_node = 1;		// where to end the grid
 	node_space = 0; 		// when zero use num_nodes
 };
 
-FD_grid::FD_grid(double x0, double xf, int n){
-
+FD_grid::FD_grid(double x0, double xf, int n)
+{
 	num_nodes = n;		// when zero use node_space
 	initial_node = x0;	// where to start the grid
 	final_node = xf;		// where to end the grid
 	node_space = 0; 		// when zero use num_nodes
+	set_nodes();
 };
 
-FD_grid::FD_grid(double x0, double xf, double dx){
-
+FD_grid::FD_grid(double x0, double xf, double dx)
+{
 	num_nodes = 0;		// when zero use node_space
 	initial_node = x0;	// where to start the grid
 	final_node = xf;		// where to end the grid
 	node_space = dx; 		// when zero use num_nodes
+	set_nodes();
 };
 
 
@@ -90,21 +94,24 @@ void FD_grid::set_nodes(void) // create a 1d vector of nodes based on number of 
 	num_nodes=nodes.size();
 };
 
-void FD_grid::set_nodes(std::vector<double> v) // create a 1d vector of nodes based on number of nodes or space between them
+void FD_grid::set_nodes(std::vector<double> v) // Set a specific vector of values as nodes
 {
 	nodes=v;
 };
 
-int FD_grid::get_num_nodes(){ // return the number of nodes of a 1d grid
+int FD_grid::get_num_nodes()		// return the number of nodes of a 1d grid
+{
 	return num_nodes;
 };
 
-void FD_grid::get_nodes(std::vector<double> &v){	// return a vector containing the 1d nodes of a grid
+void FD_grid::get_nodes(std::vector<double> &v)		// return a vector containing the 1d nodes of a grid
+{
 	v=nodes;
 };
 
 
-void FD_grid::get_nodes(std::vector<std::vector<double> > &v, int d){	// return a vector containing the 1d nodes of a grid
+void FD_grid::get_nodes(std::vector<std::vector<double> > &v, int d)	// return a vector containing the 1d nodes of a grid
+{
 	switch(d)
 	{
 		case 2:
@@ -118,42 +125,45 @@ void FD_grid::get_nodes(std::vector<std::vector<double> > &v, int d){	// return 
 	}
 };
 
-void FD_grid::create_multid_nodes(int des_dim){
-	//switch (des_dim)
-	if(des_dim==2){
-		//case 2:
-			std::vector<double> entry2(2);
-			for(unsigned int i=0;i<nodes.size();i++)
+void FD_grid::create_multid_nodes(int des_dim)
+{
+	if(des_dim==2)
+	{
+		std::vector<double> entry2(2);
+		for(unsigned int i=0;i<nodes.size();i++)
+		{
+			for(unsigned int j=0;j<nodes.size();j++)
 			{
-				for(unsigned int j=0;j<nodes.size();j++)
+				entry2[0] = nodes[j]; entry2[1]= nodes[i];
+				nodes2d.push_back(entry2);
+			}
+		}
+	}
+	else if(des_dim==3)
+	{
+		std::vector<double> entry3(3);
+		for(unsigned int i=0;i<nodes.size();i++)
+		{
+			for(unsigned int j=0;j<nodes.size();j++)
+			{
+				for(unsigned int k=0;k<nodes.size();k++)
 				{
-					entry2[0] = nodes[j]; entry2[1]= nodes[i];
-					nodes2d.push_back(entry2);
+					entry3[0] = nodes[k]; entry3[1] = nodes[j]; entry3[2] = nodes[i];
+					nodes3d.push_back(entry3);
 				}
 			}
-			}//break;
-		else if(des_dim==3){//case 3:
-			std::vector<double> entry3(3);
-			for(unsigned int i=0;i<nodes.size();i++)
-			{
-				for(unsigned int j=0;j<nodes.size();j++)
-				{
-					for(unsigned int k=0;k<nodes.size();k++)
-					{
-						entry3[0] = nodes[k]; entry3[1] = nodes[j]; entry3[2] = nodes[i];
-						nodes3d.push_back(entry3);
-					}
-				}
-			}
-			}//break;
-		else{ //default:
-			std::cout<< " \n ------ Not a valid dimension (so far) ------ \n";}
+		}
+	}
+	else
+	{ 
+		std::cout<< " \n ------ Not a valid dimension (so far) ------ \n";
+	}
 
-	//}
 };
 	
 
-void FD_grid::move_nodes(std::vector<double> dn){
+void FD_grid::move_nodes(std::vector<double> dn)
+{
 	for(unsigned int i=0;i<=nodes.size();i++)
 	{
 		nodes[i]+=dn[i];
