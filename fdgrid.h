@@ -32,7 +32,7 @@ class FD_grid
 	void get_nodes(std::vector< std::vector<double> >&, int);						// get the nodes
 	void create_multid_nodes(int);
 	void move_nodes(std::vector<double>);
-//	typedef FD_grid::value_type FD_grid_type;
+	double get_dx();
 };
 
 
@@ -161,6 +161,10 @@ void FD_grid::create_multid_nodes(int des_dim)
 
 };
 	
+double FD_grid::get_dx()
+{
+  return node_space;
+}
 
 void FD_grid::move_nodes(std::vector<double> dn)
 {

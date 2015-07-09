@@ -1,37 +1,54 @@
 #include<iostream>
-#include"fdgrid.h"
 #include<iterator>
 #include<cstdlib>
-#include <math.h>
+#include<math.h>
+#include<fstream>
+#include<string>
+#include<sstream>
+#include<algorithm> 
+#include<stdlib.h>
+#include<iomanip>
 
+#include"fdgrid.h"
 
 using namespace std;
 
 
-//	Burgers equation object containing:
-//		- the coordinates x, y, z 	(TODO: Higher dimentions.)
-//		- the states u, v, w		(TODO: System of equation?)
-//		- the dimension
-//		- the initial condition (function)
-//		- the flux function
+/*
+ *	Concervation Law Object:
+	- the coordinates x, y, z 	(TODO: Higher dimentions.)
+	- the states u, v, w		(TODO: System of equation?)
+	- the dimension
+	- the initial condition (function)
+	- the flux function
+*/
 
-//template <typename GridType>
+/*
+ * Conservation Laws class for FD implementation, it contais the dimention dim, the cartesian variables x, y, z and the state u
+ */
 class FD_Conservation_Laws{
 	int dim, n;
+	double dx;
 	vector<double> x, y, z; // Coordinates
 	vector<double> u, u0; 	// State and Initial Condition
 	vector<double> flux;	// Evaluation of the flux function
 public:
-	template <typename GridType> FD_Conservation_Laws(GridType& );		// Constructors
+	template <typename GridType> FD_Conservation_Laws(GridType& );			// Constructors
 	template <typename GridType> FD_Conservation_Laws(GridType& , int); 				
-	void set_dimension(int);						// TODO: Update code for higher dimensions
-	void set_ic(vector<double>&,vector<double>&); 				// Evaluate Initial Condition (const x,u) for now
+	void set_dimension(int);							// TODO: Update code for higher dimensions
+	void set_ic(vector<double>&,vector<double>&); 					// Evaluate Initial Condition (const x,u) for now
 	template <typename InputVector> InputVector Burgers_1D_Flux(InputVector&); 		// Burgers Flux function
-	void get_state(vector<double>&);
+	void get_state(vector<double>&);						// Return state of conservation laws
+	void write_results(const char*);							// Write results in a file
+	template <typename InputVector, typename StateVector, typename type_dt> StateVector OneStepScheme(InputVector&, StateVector&, type_dt);
+	template<typename InputVector, typename OutputValue> OutputValue MyMaxEntry(InputVector&);
+	void run();
 };
 
 
-//	Constructor for the Conservation Law  object
+/*
+ *	Constructors for the Conservation Law object
+ */
 template <typename GridType> 
 FD_Conservation_Laws::FD_Conservation_Laws(GridType& grid) //(FD_grid::FD_grid& grid)
 {
@@ -47,6 +64,7 @@ FD_Conservation_Laws::FD_Conservation_Laws(GridType& grid, int dim) //(FD_grid::
 	{
 	case 1:
 		grid.get_nodes(x);
+		dx = grid.get_dx();
 		set_ic(x, u0);
 		u = u0;
 		break;
@@ -61,19 +79,24 @@ FD_Conservation_Laws::FD_Conservation_Laws(GridType& grid, int dim) //(FD_grid::
 
 };
 
-//	Initial Condition for the one-dimenstional Burgers equation, in this case it is an exponential bump exp(-(10x)^2)
+/*
+ *	Initial Condition for the one-dimenstional Burgers equation, in this case it is an exponential bump exp(-(10x)^2)
+ */
 void FD_Conservation_Laws::set_ic(vector<double>& x, vector<double>& u0)
 {
 	for(unsigned int i = 0; i < x.size(); i++)
 	//for(vector<double>::iterator i = x.begin(); i != x.end(); i++)
 	{
-		double x0 = -100*x[i]*x[i];
+		double x0 = -x[i]*x[i];
 		x0 = exp(x0);
 		u0.push_back(x0);
 	}
 
 };
 
+/*
+ * 	Numerical flux for the 1-dimentional burgers equations
+ */
 template <typename InputVector> 
 InputVector FD_Conservation_Laws::Burgers_1D_Flux(InputVector& u)
 {
@@ -88,15 +111,105 @@ InputVector FD_Conservation_Laws::Burgers_1D_Flux(InputVector& u)
 	return flux;
 };//*/
 
-//	Set dimension of the conserbation law, which is one by default.
+/*
+ * 	Set dimension of the conserbation law, which is one by default.
+ */
 void FD_Conservation_Laws::set_dimension(int d)
 {
 	dim=d;
 };
 
+/*
+ *	Return state
+ */
 void FD_Conservation_Laws::get_state(vector<double>& state)
 {
 	state=u;
 };
 
+/*
+ * 	Numerical Scheme
+ */
+template <typename InputVector, typename StateVector, typename delta>
+StateVector FD_Conservation_Laws::OneStepScheme(InputVector& x, StateVector& u, delta dt)
+{
+  StateVector u_new(u.size());
+  delta lambda = dt/dx;
+  for(unsigned int i = 1; i < u.size()-1; i++)				// Exclude boundary terms
+    u_new[i] = 0.5*(u[i-1]+u[i+1]) - 0.5*lambda*(flux[i+1]-flux[i-1]);
+  
+  //	Default boundary: Periodic		TODO: Function switching between different kinds of boundaries
+  u_new[0] = 0.5*(u[u.size()-1]+u[1]) - lambda*(flux[1]-flux[flux.size()-1]);
+  u_new[u_new.size()-1] = 0.5*(u[u.size()-2]+u[0]) - lambda*(flux[0]-flux[u.size()-2]);
+  
+  return u_new;
+  
+};
 
+
+
+/*
+ * 	Write results in a file which name is storef in "filename"
+ */
+
+void FD_Conservation_Laws::write_results(const char* filename)
+{
+  FILE * printResults = fopen(filename,"w");
+  fprintf(printResults, "# x \t u \n" );
+  for(unsigned int i=0; i < x.size(); i++)
+    fprintf(printResults, " %e \t %e \n" , x[i], u[i]);
+  fclose(printResults);
+};
+
+/*
+ * 	didn't wanna do this... but
+ */
+
+template <typename InputVector, typename OutputValue> OutputValue FD_Conservation_Laws::MyMaxEntry(InputVector& vector)
+{
+  OutputValue a=vector[0];
+  for(unsigned int i=1; i<vector.size(); i++)
+    a=(a>vector[i]?a:vector[i]);
+  return a;
+};
+
+/*
+ * 	Main sequence of time evolution
+ */
+
+void FD_Conservation_Laws::run()
+{
+  double finalT = 1.0;
+  double t=0.0;
+  
+  int step_number=0, plots_number=20;
+  
+  double dt_write=finalT/plots_number, next_w_time=dt_write;
+  
+  
+  while(t < finalT)
+  {
+    
+    double max_u = MyMaxEntry<vector<double>, double>(u);
+    double dt = 0.5*dx/max_u;
+
+ 
+    //	Calculate scheme and new flux
+    u = OneStepScheme(x, u, dt);
+    flux = Burgers_1D_Flux(u);
+    
+    if(t>next_w_time)
+    {
+      step_number++;
+      next_w_time+=dt_write;
+      std::ostringstream num_sequence;
+      num_sequence << step_number;
+      //string num_sequence = to_string(step_number);
+      string _num_sequence = num_sequence.str();
+      string filename="burgers-0"+ _num_sequence +".dat";
+      const char * _filename=filename.c_str();
+      write_results(_filename);
+    }
+    t+=dt;
+  } 
+}
