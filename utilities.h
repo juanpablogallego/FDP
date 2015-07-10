@@ -33,7 +33,7 @@ const char * Gen_Seq_File_Names(std::string root_name, std::string extension, in
   std::ostringstream temp_seq;				// Auxiliary variable to store a string with the sequence number
   temp_seq << seq_name;
   std::string _temp_seq = temp_seq.str();
-
+  
   int diff = width - _temp_seq.length();		// Number of zeros to be added to the sequence number
   root_name.append(diff, '0');				// Add the zeros to the root name
   full_name = root_name + _temp_seq + extension;	// Stick together the full name
