@@ -6,14 +6,14 @@
 #include<cstdlib>
 #include<string.h>
 
+#include"fdgrid.h"
 #include"cons_law.h"
 
 int main(int argc, char **argv) {
-    //std::cout << "Hello, world!" << std::endl;
-    
-    	//	Create the 1D grid
+	
+	//Create the 1D grid
 	int dim=1;
-	FD_grid grid(-5,5,501);
+	FD_grid grid (-5,5,501);
 
 /*	//	Verify if the grid actually works
 	int n=grid.get_num_nodes();
@@ -42,6 +42,9 @@ int main(int argc, char **argv) {
 	std::cout<<" \n		----------	Initial Condition	----------	 \n";
       	std::copy(state.begin(), state.end(), std::ostream_iterator<double>(std::cout, " \n"));
 	std::cout<<"\n";
-      	return 0;
 //*/
-}
+
+	return 0;
+};
+
+
