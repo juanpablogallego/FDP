@@ -24,6 +24,8 @@ double MyMaxEntry(std::vector<double>& vector)
 
 /*
  * 	Genrate the name of a file for a sequence of outputs
+ * 	- Input	: Root name, extrension of the file, width of digits in the file
+ * 	- Output: const char* formated name of a file	
  */
 const char * Gen_Seq_File_Names(std::string root_name, std::string extension, int width, int seq_name)
 {

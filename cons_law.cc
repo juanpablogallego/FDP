@@ -1,4 +1,5 @@
 #include<iostream>
+#include<fstream>
 #include<vector>
 #include<string.h>
 #include"cons_law.h"
@@ -60,11 +61,20 @@ StateVector FD_Conservation_Laws::OneStepScheme(InputVector& x, StateVector& u, 
  */
 void FD_Conservation_Laws::write_results(const char* filename)
 {
+  /* // Old version (c++98)
   FILE * printResults = std::fopen(filename,"w");
   std::fprintf(printResults, "# x \t u \n" );
   for(unsigned int i=0; i < x.size(); i++)
     std::fprintf(printResults, " %e \t %e \n" , x[i], u[i]);
-  std::fclose(printResults);
+  std::fclose(printResults);//*/
+  
+  // New version (C++0X)
+  std::ofstream printResults;
+  printResults.open (filename);
+  printResults << "# \t x \t u\n";
+  for(unsigned int i=0; i < x.size(); i++)
+    printResults << x[i] << "\t" << u[i] << "\n";
+  printResults.close();  
 };
 
 /*
