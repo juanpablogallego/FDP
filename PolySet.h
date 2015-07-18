@@ -31,15 +31,17 @@ public:
 
 class Polynomial : public Monomial
 {
-  //vector<double> polycoef;		// Vector coeficient for polylnomials 
+  vector<double> polycoef;		// Vector coeficient for polylnomials 
   int max_order;
   int id;
   vector<Monomial> polynom;
 public:
   Polynomial();
-  Polynomial(int, vector<double>);
+  Polynomial(vector<double>&);
+  Polynomial(int, vector<double>&);
+
   //void set_id(int);
-  //int get_id();
+  vector<double> get_coef();
   double eval(double);
   void diff();
   void write();
@@ -66,9 +68,9 @@ template<typename BasisFuncType, typename BasicFuncCoef>
 class GeneralPolyBasis
 {
   vector<BasisFuncType> basis;
-  vector<BasicFuncCoef> coef;
+  //vector<BasicFuncCoef> coef;
 public:
-  GeneralPolyBasis(int, BasicFuncCoef);
+  GeneralPolyBasis(int, BasicFuncCoef&);
   void write();
   vector<double> eval(double);
 };
@@ -76,13 +78,12 @@ public:
 //		Class definitions
 
 template<typename BasisFuncType, typename BasicFuncCoef>
-GeneralPolyBasis<BasisFuncType, BasicFuncCoef>::GeneralPolyBasis ( int max_order, BasicFuncCoef _coef)
+GeneralPolyBasis<BasisFuncType, BasicFuncCoef>::GeneralPolyBasis ( int max_order, BasicFuncCoef &_coef)
 {
   for(unsigned int i=0; i<=max_order; i++)
   {
-//    BasisFuncType element(max_order,_coef[i]);
-    BasisFuncType element(i,_coef[i]);
-
+    BasisFuncType element(max_order,_coef[i]);
+//    BasisFuncType element(i,_coef[i]);
     element.set_id(i+1);
     basis.push_back(element);
   }
@@ -104,7 +105,6 @@ void GeneralPolyBasis<BasisFuncType, BasicFuncCoef>::write()
     cout << "} \n";
 };
 
-
 template<typename BasisFuncType, typename BasicFuncCoef>
 vector<double> GeneralPolyBasis<BasisFuncType, BasicFuncCoef>::eval ( double _value)
 {
@@ -119,4 +119,11 @@ vector<double> GeneralPolyBasis<BasisFuncType, BasicFuncCoef>::eval ( double _va
   }
   return vector_value;
 };
+
+vector<double> polymult(vector<double> a, vector<double> b);
+
+Polynomial polymult(Polynomial &a, Polynomial &b);
+
+Polynomial diff(Polynomial &a);
+
 //*/

@@ -68,6 +68,7 @@ double Monomial::get_coef()
   return coef;
 };
 
+
 //------------------------------------------------------------------------------------------------
 //		Polynomial Class definitions
 
@@ -76,26 +77,50 @@ Polynomial::Polynomial()
   
 };
 
-Polynomial::Polynomial ( int _max_order, vector<double> _coef)
+Polynomial::Polynomial ( vector<double> &_coef)
 {
-  for(unsigned int i = 0; i<=_max_order; i++)
+  polycoef = _coef;
+  for(unsigned int i = 0; i < _coef.size(); i++)
   {
     Monomial temp(i, _coef[i]);
     polynom.push_back(temp);
   }
 };
 
+Polynomial::Polynomial ( int _max_order, vector<double> &_coef)
+{
+  polycoef = _coef;
+  for(unsigned int i = 0; i<=_max_order, i < _coef.size(); i++)
+  {
+    Monomial temp(i, _coef[i]);
+    polynom.push_back(temp);
+  }
+};
 
 double Polynomial::eval ( double _value)
 {
-  double value=0;
+  double value=0.0, power=1.0;
+  for(unsigned int i = 0; i < polycoef.size(); i++)
+  {
+    value+=polycoef[i]*power;
+    power*=_value;
+  }
+  return value;
+  
+  /*double value=0;
   for(unsigned int i = 0; i < polynom.size(); i++)
   {
     Monomial temp = polynom[i];
     value+=temp.eval(_value);
   }
-  return value;
+  return value;//*/
 };
+
+vector< double > Polynomial::get_coef()
+{
+  return polycoef;
+};
+
 
 
 void Polynomial::diff()
@@ -149,7 +174,6 @@ vector< double > PolyBasis::eval ( double _value)
   return vector_value;
 };
 
-
 void PolyBasis::write()
 {
   Monomial temp;
@@ -165,3 +189,33 @@ void PolyBasis::write()
     cout << "} \n";
 };
 
+/*
+ * 	Polynomial Multiplication function
+ */
+
+vector<double> polymult(vector<double> a, vector<double> b)
+{
+  int size = a.size()+b.size()-1;
+  vector<double> c(size, 0.0);
+  for(unsigned int i = 0; i < a.size(); i++)
+  {
+    for(unsigned int j = 0; j < b.size(); j++)
+      c[i+j]+=a[i]*b[j];
+  }
+  return c;
+};
+
+
+Polynomial polymult(Polynomial &a, Polynomial &b)
+{
+  vector<double> c = polymult(a.get_coef(), b.get_coef());
+  Polynomial poly_c(c);
+  return poly_c;
+};
+
+Polynomial diff(Polynomial &a)
+{
+  Polynomial b = a;
+  b.diff();
+  return b;
+};

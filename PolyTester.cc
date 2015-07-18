@@ -65,7 +65,7 @@ int main()
   }//*/
   
   //		General Basis tester
-  {
+  /*{
   
   int order = 4;
   
@@ -104,7 +104,7 @@ int main()
   cout<<"\n\t"; copy(temp2.begin(), temp2.end(), std::ostream_iterator<double>(std::cout, ", "));//*/
 
   
-  GeneralPolyBasis<Polynomial, vector<vector<double> > > Basis(order, coef);
+  /*GeneralPolyBasis<Polynomial, vector<vector<double> > > Basis(order, coef);
   
   
   Basis.write();
@@ -118,5 +118,24 @@ int main()
   cout << "} \n";
   }//*/
   
+  
+  //		Polynomial Multiplication check
+  {
+    vector<double> a(4,0), b(2,0), c;
+    a[0]=0; a[1]=0; a[2]=1; a[3]=2;
+    b[0]=1; b[1]=1;
+    
+    Polynomial poly_a(a), poly_b(b), poly_c = polymult(poly_a, poly_b);
+    poly_c.write();
+    cout<<"\n";
+    
+    poly_a = diff(poly_c);
+    poly_a.write();
+    cout<<"\n";
+    //poly_c.diff();
+    poly_c.write();
+    
+  }//*/
+
   return 0;
 };

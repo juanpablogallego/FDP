@@ -44,6 +44,10 @@ const char * Gen_Seq_File_Names(std::string root_name, std::string extension, in
   return full_name.c_str();				// Return the full name with " const char * " format
 };
 
+/*
+ * Retuns The Legendre Coefficients for Polynomial Basis until k = 4 (TODO: Se podria hacer generico?)
+ */
+
 std::vector<std::vector<double> > LegendreCoefficients(int order)
 {
   std::cout<< "\n \t Legendre Coeficients: \n";
