@@ -4,6 +4,9 @@
 #include<vector>
 #include<string>
 #include<sstream>
+#include<iterator>
+#include<iostream>
+
 
 /*
  * 	Utility functions to ease my life with coding
@@ -41,3 +44,55 @@ const char * Gen_Seq_File_Names(std::string root_name, std::string extension, in
   return full_name.c_str();				// Return the full name with " const char * " format
 };
 
+std::vector<std::vector<double> > LegendreCoefficients(int order)
+{
+  std::cout<< "\n \t Legendre Coeficients: \n";
+  
+  std::vector<std::vector<double> > Coefficients;
+  std::vector<double> temp;
+  temp.push_back(1);
+  std::copy(temp.begin(), temp.end(), std::ostream_iterator<double>(std::cout, ", "));
+  std::cout<<"\n";
+  Coefficients.push_back(temp);
+  if(order==0)
+    return Coefficients;
+  
+  temp[0]=0;
+  temp.push_back(1);
+  std::copy(temp.begin(), temp.end(), std::ostream_iterator<double>(std::cout, ", "));
+  std::cout<<"\n";
+  Coefficients.push_back(temp);
+  if(order==1)
+    return Coefficients;
+  
+  temp[0]=-0.5;
+  temp[1]=0;
+  temp.push_back(1.5);
+  std::copy(temp.begin(), temp.end(), std::ostream_iterator<double>(std::cout, ", "));
+  std::cout<<"\n";
+  Coefficients.push_back(temp);
+  if(order==2)
+    return Coefficients;
+  
+  temp[0]=0;
+  temp[1]=-1.5;
+  temp[2]=0;
+  temp.push_back(2.5);
+  std::copy(temp.begin(), temp.end(), std::ostream_iterator<double>(std::cout, ", "));
+  std::cout<<"\n";
+  Coefficients.push_back(temp);
+  if(order==3)
+    return Coefficients;
+  
+  temp[0]=3.0/8.0;
+  temp[1]=0;
+  temp[2]=-30.0/8.0;
+  temp[3]=0;
+  temp.push_back(35.0/8.0);
+  std::copy(temp.begin(), temp.end(), std::ostream_iterator<double>(std::cout, ", "));
+  std::cout<<"\n";
+  Coefficients.push_back(temp);
+  if(order==4)
+    return Coefficients;
+  
+};
