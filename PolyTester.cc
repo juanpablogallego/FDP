@@ -2,8 +2,9 @@
 #include<vector>
 #include<iterator>
 
-#include"PolySet.h"
+//#include"PolySet.h"
 #include"utilities.h"
+#include"fe_definitions.h"
 
 using namespace std;
 
@@ -120,7 +121,7 @@ int main()
   
   
   //		Polynomial Multiplication check
-  {
+  /*{
     vector<double> a(4,0), b(2,0), c;
     a[0]=0; a[1]=0; a[2]=1; a[3]=2;
     b[0]=1; b[1]=1;
@@ -133,9 +134,76 @@ int main()
     poly_a.write();
     cout<<"\n";
     //poly_c.diff();
-    poly_c.write();
+    poly_b = integrate(poly_b);
+    poly_b.write();
     
   }//*/
 
+  //		Mass matrix generation
+  {
+      int order = 4;
+  
+  vector<vector<double> > coef = LegendreCoefficients(order);
+  typedef GeneralPolyBasis<Polynomial, vector<vector<double> > > BasisType;
+
+  BasisType Basis(order, coef);
+  
+  vector<vector<double> > Matrix;
+  CreateMassMatrix(Basis, Matrix);
+
+  /*vector<double> temp;
+  
+  for(unsigned int i=0; i<coef.size(); i++)
+  {
+    temp=coef[i];
+    cout<<"\n";
+    copy(temp.begin(), temp.end(), ostream_iterator<double>(cout, ", "));
+  }//*/
+  
+  /*typedef GeneralPolyBasis<Polynomial, vector<vector<double> > > BasisType;
+  BasisType Basis(order, coef);
+  Basis.write();
+  
+  vector<BasisType> Matriz;
+  
+  int b_size= Basis.get_base_size();
+  BasisType _temp;
+  
+  Polynomial poly;
+  
+  for(unsigned int i = 0; i < b_size; i++)
+  {
+    _temp = Basis;
+    poly = Basis.get_base(i);
+    _temp.poly_mult(poly);
+    _temp.integrate_base();
+    Matriz.push_back(_temp);
+  };
+  
+  double Matrix[b_size][b_size];
+  vector<double> eval_baseM(b_size,0), eval_basem(b_size,0);
+  for(unsigned int i = 0; i < b_size;i++)
+  {
+    _temp = Matriz[i];
+    eval_basem = _temp.eval(-1);
+    eval_baseM = _temp.eval(1);
+    cout<<"\n";
+    for(unsigned int j = 0; j < b_size;j++)
+    {
+      Matrix[i][j]=eval_baseM[j]-eval_basem[j];
+      cout<<"\t"<<Matrix[i][j];
+    }
+  }//*/
+  
+  double x0=0.7;
+  
+  vector<double> state = Basis.eval(x0);
+  
+  cout << "\n \t M("<< x0 <<") = {";
+  copy(state.begin(), state.end(), std::ostream_iterator<double>(std::cout, ", "));
+  cout << "} \n";
+  
+  }
+  
   return 0;
 };

@@ -6,10 +6,12 @@
 #include<sstream>
 #include<iterator>
 #include<iostream>
+#include <cmath>
 
 
 /*
- * 	Utility functions to ease my life with coding
+ * 		Utility functions to ease my life with coding, general functions that can be
+ * 	useful in the whole program.
  */
 
 
@@ -44,10 +46,63 @@ const char * Gen_Seq_File_Names(std::string root_name, std::string extension, in
   return full_name.c_str();				// Return the full name with " const char * " format
 };
 
+
+/*
+ * 	Add double vectors using the operator "+"
+ */
+std::vector<double> operator+(std::vector<double>& a,std::vector<double>& b)
+{
+  std::vector<double> c;
+  for(unsigned int i=0;i<a.size();i++)
+    c.push_back(a[i]+b[i]);
+  return c;
+};
+
+/*
+ * 	Substract double vectors using the operator "-"
+ */
+std::vector<double> operator-(std::vector<double>& a,std::vector<double>& b)
+{
+  std::vector<double> c;
+  for(unsigned int i=0;i<a.size();i++)
+    c.push_back(a[i]-b[i]);
+  return c;
+};
+
+/*
+ * 	Scalar product between double vectors using the operator "*"
+ */
+double operator*(std::vector<double>& a,std::vector<double>& b)
+{
+  double c=0;
+  for(unsigned int i=0;i<a.size();i++)
+    c+=a[i]*b[i];
+  return c;
+};
+
+/*
+ * 	Scalar product between a double and a double vectors using the operator "*"
+ */
+std::vector<double> operator*(double a, std::vector< double >& b)
+{
+  std::vector<double> c;
+  for(unsigned int i=0;i<b.size();i++)
+    c.push_back(a*b[i]);
+  return c;
+};
+
+/*
+ * 	Norm of a double vector
+ */
+double Norm(std::vector<double> a)
+{
+  double norm=a*a;
+  return std::sqrt(norm);
+};
+
 /*
  * Retuns The Legendre Coefficients for Polynomial Basis until k = 4 (TODO: Se podria hacer generico?)
  */
-
 std::vector<std::vector<double> > LegendreCoefficients(int order)
 {
   std::cout<< "\n \t Legendre Coeficients: \n";
