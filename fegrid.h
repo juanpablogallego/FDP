@@ -2,7 +2,7 @@
 #include<vector>
 #include"fdgrid.h"
 
-
+using namespace std;
 
 //--------------------------------------------------------------------------------------------------------------------
 //		Classes for the polynomial basis functions
@@ -17,13 +17,22 @@ class Element			// It should be a
 
 //--------------------------------------------------------------------------------------------------------------------
 //		Classes for the domain discretzation in cells
+template<typename PolyBasisCoef>
 class Cell					// General class
 {
   int dim, num_corners, num_edges, num_faces, 	// parameters of the general class
       cell_id, ref_level;	
-  std::vector<int> corners;		// Template parameter can be eather int for 1D or vectors for 2 and 3D
-  std::vector<int> neighbors;			// can be ordered left 0, right 1, botom 2, top 3, front 4, behind 5
-  std::vector<double> TrialFuncCoef;
+  vector<int> corners;		// Template parameter can be eather int for 1D or vectors for 2 and 3D
+  vector<int> neighbors;			// can be ordered left 0, right 1, botom 2, top 3, front 4, behind 5
+  PolyBasisCoef TrialFuncCoef;
+  
+public:
+  Cell();
+  Cell(vector<int>&,vector<int>&, PolyBasisCoef);
+  void set_corners(vector<int>&);
+  void set_neighbours(vector<int>&);
+  void set_coef(vector<double>&);
+  
 };
 
 //--------------------------------------------------------------------------------------------------------------------
