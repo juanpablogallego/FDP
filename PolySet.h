@@ -34,18 +34,18 @@ class Polynomial : public Monomial
   vector<double> polycoef;		// Vector coeficient for polylnomials 
   int max_order;
   int id;
-  vector<Monomial> polynom;
+  string name = "x";
 public:
   Polynomial();
   Polynomial(vector<double>&);
-  Polynomial(int, vector<double>&);
+  Polynomial(int,vector<double>&);
 
+  void set_name(string);
   vector<double> get_coef();
   double eval(double);
   void diff();
   void write();
   void integrate();
-  void set_polynom();
   void set_polynom(vector<double>&);
   
 };
@@ -100,8 +100,9 @@ GeneralPolyBasis<BasisFuncType, BasicFuncCoef>::GeneralPolyBasis ( int max_order
 {
   for(unsigned int i=0; i<=max_order; i++)
   {
-    BasisFuncType element(max_order,_coef[i]);
-//    BasisFuncType element(i,_coef[i]);
+    //BasisFuncType element(max_order,_coef[i]);
+    BasisFuncType element(_coef[i]);
+    
     element.set_id(i+1);
     basis.push_back(element);
   }
@@ -177,25 +178,6 @@ void GeneralPolyBasis<BasisFuncType, BasicFuncCoef>::integrate_base()
     basis[i]=poly;
   }
 };
-
-/*
- *	(?) Eliminate if not needed
- */
-
-/*template <typename BasisFuncType, typename BasicFuncCoef>
-BasisFuncType integrate_temp(BasisFuncType &a)
-{
-  BasicFuncCoef b = a.get_coef();
-  int order = b.size();
-  b.push_back(b[order-1]/order);
-  for(unsigned int i = order-1; i > 0; i--)
-  {
-    b[i] = b[i-1]/i;
-  }
-  b[0] = 0.0;
-  BasisFuncType poly_b(b);
-  return poly_b;
-};//*/
 
 /*
  * 	Additional functions for polynomials defined en PolySet.cc

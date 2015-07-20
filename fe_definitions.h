@@ -31,6 +31,7 @@ void CreateMassMatrix(BasisType Basis, vector<vector<double> > &Matrix)
     _temp = Basis;
     poly = Basis.get_base(i);
     _temp.poly_mult(poly);
+    //_temp.write(); cout<<"\n";
     _temp.integrate_base();
     tens_product_base.push_back(_temp);
   };

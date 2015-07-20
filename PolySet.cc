@@ -111,11 +111,6 @@ Polynomial::Polynomial()
 Polynomial::Polynomial ( vector<double> &_coef)
 {
   polycoef = _coef;
-  for(unsigned int i = 0; i < _coef.size(); i++)
-  {
-    Monomial temp(i, _coef[i]);
-    polynom.push_back(temp);
-  }
 };
 
 /*
@@ -124,29 +119,10 @@ Polynomial::Polynomial ( vector<double> &_coef)
  * 	  a vector and ignoring the monomial part, but then a different
  * 	  way to write the polynom must be defined.
  */
-Polynomial::Polynomial ( int _max_order, vector<double> &_coef)
+Polynomial::Polynomial ( int _id, vector<double> &_coef)
 {
   polycoef = _coef;
-  for(unsigned int i = 0; i<=_max_order, i < _coef.size(); i++)
-  {
-    Monomial temp(i, _coef[i]);
-    polynom.push_back(temp);
-  }
-};
-
-/*
- * 	Set the Polynomial inside the object, meaning the vector of monomes.
- * 	- It seems the simplest polynom would be just a vector.
- * 	- TODO: Change the Polynomial class to use just vectors.
- */
-void Polynomial::set_polynom()
-{
-  polynom.clear();
-  for(unsigned int i = 0; i < polycoef.size(); i++)
-  {
-    Monomial temp(i, polycoef[i]);
-    polynom.push_back(temp);
-  }
+  id=_id;
 };
 
 /*
@@ -155,7 +131,7 @@ void Polynomial::set_polynom()
 void Polynomial::set_polynom(vector<double> &_coef)
 {
   polycoef=_coef;
-  set_polynom();
+  //set_polynom();
 };
 
 /*
@@ -185,17 +161,15 @@ vector< double > Polynomial::get_coef()
 /*
  * 	Differentiate the polynomial
  * 	- CAUTION: Modifies the polynomial.
- * 	- worth to implement without monomes
+ * 	- (worth to implement without monomes) -> already done
  */
 void Polynomial::diff()
 {
+  vector<double> _temp_coef=polycoef;
   polycoef.clear();
-  for(unsigned int i = 0; i < polynom.size(); i++)
+  for(unsigned int i = 1; i < _temp_coef.size(); i++)
   {
-    Monomial temp = polynom[i];
-    temp.diff();
-    polycoef.push_back(temp.get_coef());
-    polynom[i]=temp;
+    polycoef.push_back(_temp_coef[i]*i);
   }
 };
 
@@ -217,6 +191,11 @@ void Polynomial::integrate()
   set_polynom(b);
 };
 
+void Polynomial::set_name ( string _name)
+{
+  name=_name;
+}
+
 /*
  * 	Write the Polynomial in a understandable form
  * 	- Uses the write() function of its monomials
@@ -225,13 +204,21 @@ void Polynomial::integrate()
  */
 void Polynomial::write()
 {
-  Monomial temp;
-  for(unsigned int i = 0; i < polynom.size(); i++)
-  {
-    temp = polynom[i];
-    if((i > 0)&&(temp.get_coef()>0))
+  for(unsigned int i = 0; i < polycoef.size(); i++)
+  {        
+    if((i > 0)&&(polycoef[i]>0))    
       cout<<" + ";
-    temp.write();
+    
+    if ((i==0)&&(polycoef[i]!=0))
+      cout <<  polycoef[i];
+    else if((polycoef[i] > 0)&&(polycoef[i]==1))
+      cout << name << "^" << i;
+    else if(polycoef[i] == 0)
+      cout << "";
+    else if(polycoef[i] == -1)
+      cout << " - " << name << "^" << i;
+    else
+      cout << polycoef[i] << "*" <<  name << "^" << i;
   }
 };
 
@@ -317,7 +304,7 @@ vector<double> polymult(vector<double> a, vector<double> b)
 Polynomial polymult(Polynomial &a, Polynomial &b)
 {
   vector<double> c = polymult(a.get_coef(), b.get_coef());
-  Polynomial poly_c(c);
+  Polynomial poly_c(b.get_id(), c);
   return poly_c;
 };
 
@@ -338,7 +325,7 @@ Polynomial integrate(Polynomial &a)
     b[i] = b[i-1]/i;
   }
   b[0] = 0.0;
-  Polynomial poly_b(b);
+  Polynomial poly_b(a.get_id(), b);
   return poly_b;
 };
 
