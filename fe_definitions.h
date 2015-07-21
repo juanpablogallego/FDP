@@ -1,4 +1,5 @@
 #include"PolySet.h"
+#include"utilities.h"
 
 typedef GeneralPolyBasis<Polynomial, vector<vector<double> > > BasisType;
 

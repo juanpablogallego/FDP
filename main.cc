@@ -6,8 +6,9 @@
 #include<cstdlib>
 #include<string.h>
 
-#include"fdgrid.h"
+//#include"fdgrid.h"
 #include"cons_law.h"
+#include"fegrid.h"
 
 int main(int argc, char **argv) {
 	
