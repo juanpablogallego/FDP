@@ -52,7 +52,7 @@ Cell<PolyBasisCoef>::Cell (vector< int >& _corners, vector< int >& _neighbors, P
 
 
 
-/*
+
 template<typename PolyBasisCoef>
 void Cell<PolyBasisCoef>::set_corners(vector<int>& _corners)
 {
@@ -131,7 +131,7 @@ class Square : Cell<PolyBasisCoef>
   PolyBasisCoef TrialFuncCoef;
 public:
   Square();
-  Square(vector<int>&);
+  Square(vector<int>&, vector< int >& , PolyBasisCoef );
 };
 
 template<typename PolyBasisCoef>

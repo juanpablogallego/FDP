@@ -46,7 +46,7 @@ double MyMaxEntry(std::vector<double>& );
 
 const char * Gen_Seq_File_Names(std::string, std::string, int, int );
 
-std::vector<std::vector<double> > LegendreCoefficients(int );
+std::vector<std::vector<double> > LegendreCoefficients(int);
 
 std::vector<double> operator+(std::vector<double>&,std::vector<double>&);
 
