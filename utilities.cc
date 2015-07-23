@@ -47,7 +47,9 @@ const char * Gen_Seq_File_Names(string root_name, string extension, int width, i
   return full_name.c_str();				// Return the full name with " const char * " format
 };
 
-
+/*
+ * 	Complete a vector with zeros while trying to sum or substract with a bigger vector
+ */
 void fillzeros(vector<double>& a, int number)
 {
   for(unsigned int i=0; i<number; i++)
@@ -142,6 +144,27 @@ vector<double> operator/(vector< double >& a, double b )
 };
 
 /*
+ * 	Matrix vector multiplication
+ */
+
+vector<double> multiAx(vector<vector<double> > &A, vector<double> &x)
+{
+  vector<double> b, temp;
+  for(unsigned int i = 0; i < A.size(); i++)
+  {
+    temp = A[i];
+    b.push_back(temp*x);
+  }
+  return b;
+};//*/
+
+vector<double> operator*(vector< vector<double> > &A, vector< double >&x)
+{
+  return multiAx(A,x);
+}
+
+
+/*
  * 	Norm of a double vector
  */
 double Norm(vector<double> a)
@@ -169,17 +192,17 @@ vector<double> polymult(vector<double> a, vector<double> b)
 
 
 vector<vector<double> > LegendreCoefficients(int max_degree) //LegendrePolynomials
-{    
+{
   vector<double> temp_row;
   vector<vector<double> > polyset;
 
   temp_row.push_back(1);
-  polyset.push_back(temp_row);  
+  polyset.push_back(temp_row);
   if(max_degree>0)
   {
-    temp_row.clear();    
-    temp_row.push_back(0);    
-    temp_row.push_back(1);    
+    temp_row.clear();
+    temp_row.push_back(0);
+    temp_row.push_back(1);
     polyset.push_back(temp_row);
     if( max_degree > 1 )
     {

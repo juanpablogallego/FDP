@@ -56,4 +56,8 @@ double operator*(std::vector<double>&,std::vector<double>&);
 
 std::vector<double> operator*(double , std::vector< double >& );
 
+std::vector<double> multiAx(std::vector<std::vector<double> > &, std::vector<double> &);
+
+std::vector<double> operator*(std::vector< std::vector<double> > &, std::vector< double >&);
+
 double Norm(std::vector<double> a);
