@@ -47,7 +47,9 @@ const char * Gen_Seq_File_Names(string root_name, string extension, int width, i
   return full_name.c_str();				// Return the full name with " const char * " format
 };
 
-
+/*
+ * 	Complete a vector with zeros while trying to sum or substract with a bigger vector
+ */
 void fillzeros(vector<double>& a, int number)
 {
   for(unsigned int i=0; i<number; i++)
@@ -140,6 +142,27 @@ vector<double> operator/(vector< double >& a, double b )
     c.push_back(a[i]/b);
   return c;
 };
+
+/*
+ * 	Matrix vector multiplication
+ */
+
+vector<double> multiAx(vector<vector<double> > &A, vector<double> &x)
+{
+  vector<double> b, temp;
+  for(unsigned int i = 0; i < A.size(); i++)
+  {
+    temp = A[i];
+    b.push_back(temp*x);
+  }
+  return b;
+};//*/
+
+vector<double> operator*(vector< vector<double> > &A, vector< double >&x)
+{
+  return multiAx(A,x);
+}
+
 
 /*
  * 	Norm of a double vector

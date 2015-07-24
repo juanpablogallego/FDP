@@ -287,18 +287,6 @@ void PolyBasis::write()
  * 	  or vectors of coefficients
  */
 
-// 	Unsing vector of coeffitients
-/*vector<double> polymult(vector<double> a, vector<double> b)
-{
-  int size = a.size()+b.size()-1;
-  vector<double> c(size, 0.0);
-  for(unsigned int i = 0; i < a.size(); i++)
-  {
-    for(unsigned int j = 0; j < b.size(); j++)
-      c[i+j]+=a[i]*b[j];
-  }
-  return c;
-};//*/
 
 //	Using polynomials
 Polynomial polymult(Polynomial &a, Polynomial &b)
@@ -335,4 +323,3 @@ Polynomial diff(Polynomial &a)
   b.diff();
   return b;
 };
-
