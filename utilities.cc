@@ -164,37 +164,71 @@ vector<double> polymult(vector<double> a, vector<double> b)
 };
 
 /*
+ * 	Computes the factorial of a integral value
+ */
+int factorial(int a)
+{
+  if(a==0)  return 1;
+  else if(a==1) return 1;
+  else if((a>1)) return a*=factorial(a-1);
+};
+
+double poly_eval (vector<double> &_poly, double _value)
+{
+  double value=0.0, power=1.0;
+  for(unsigned int i = 0; i < _poly.size(); i++)
+  {
+    value+=_poly[i]*power;
+    power*=_value;
+  }
+  return value;
+};
+
+vector<double> integrate(vector<double> &_poly)
+{
+  vector<double> b = _poly;
+  int order = b.size();
+  b.push_back(b[order-1]/order);
+  for(unsigned int i = order-1; i > 0; i--)
+  {
+    b[i] = b[i-1]/i;
+  }
+  b[0] = 0.0;
+  return b;
+};
+
+/*
  * Retuns The Legendre Coefficients for Polynomial Basis recursively
  */
 
-
 vector<vector<double> > LegendreCoefficients(int max_degree) //LegendrePolynomials
-{    
+{
   vector<double> temp_row;
   vector<vector<double> > polyset;
 
-  temp_row.push_back(1);
+  temp_row.push_back(1);		// 1/sqrt(2)
   polyset.push_back(temp_row);  
   if(max_degree>0)
   {
     temp_row.clear();    
-    temp_row.push_back(0);    
-    temp_row.push_back(1);    
+    temp_row.push_back(0);  
+    temp_row.push_back(1);		// sqrt(3)/sqrt(2)
     polyset.push_back(temp_row);
     if( max_degree > 1 )
     {
       for(unsigned int j = 2; j <= max_degree; j++)
       {
-	double n = j - 1;
+	double n = j -1;
 	vector<double> x = polyset[1], poly_1=polyset[j-1], poly_2=polyset[j-2];
-	poly_1=polymult(x,poly_1);
-	poly_1= (2*n+1)*poly_1;
-	poly_2= n * poly_2;	
+	poly_1 = polymult(x,poly_1);
+	poly_1 = (2*n+1)*poly_1;
+	poly_2 = n * poly_2;	
 	temp_row = (poly_1 - poly_2);
-	temp_row = temp_row/(n+1);
+	temp_row = temp_row / (n+1);
 	polyset.push_back(temp_row);
       }
     }
   }
   return polyset;
-};//*/
+};
+

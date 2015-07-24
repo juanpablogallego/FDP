@@ -56,4 +56,11 @@ double operator*(std::vector<double>&,std::vector<double>&);
 
 std::vector<double> operator*(double , std::vector< double >& );
 
-double Norm(std::vector<double> a);
+double Norm(std::vector<double> );
+
+int factorial(int );
+
+double poly_eval (std::vector<double> &, double );
+
+std::vector<double> integrate(std::vector<double> &_poly);
+
