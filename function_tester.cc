@@ -2,7 +2,11 @@
 #include<stdio.h>
 #include<string>
 #include<sstream>
+#include<iterator>
+#include<vector>
 
+
+#include"utilities.h"
 
 using namespace std;
 
@@ -31,12 +35,32 @@ using namespace std;
   return full_name.c_str();
 };*/
 
-int factorial(int a)
+/*int factorial(int a)
 {
   if(a==0)  return 1;
   else if(a==1) return 1;
   else if((a>1)) return a*=factorial(a-1);
-};
+};//*/
+
+/*vector<vector<double>> transpose(vector<vector<double> > & A)
+{
+  vector<vector<double> > transA; //[A.size()][A.size()];
+  vector<double> column;
+  
+  for(unsigned int j=0; j<A.size(); j++)
+  {
+    column.clear();
+    for(unsigned int i=0; i<A.size(); i++)
+    {
+      vector<double> row = A[i];
+      column.push_back(row[j]);
+      //copy(column.begin(), column.end(), std::ostream_iterator<double>(std::cout, "\t "));
+    }
+    transA.push_back(column);
+  }
+
+  return transA;
+};//*/
 
 int main()
 {
@@ -48,10 +72,36 @@ int main()
   const char * full_name = Gen_Seq_File_Names(root_name, extension, seq_name, width);
   cout <<"\n" << full_name << "\n";*/
   
-  int order=5, n= factorial(order);  
+  /*int order=5, n= factorial(order);  
   cout <<"\n \t Order \t" << order << "\n";
   cout <<"\n \t factorial \t"<<n <<"\n";
+  */
+  
+  vector<vector<double> > A, B;
+  vector<double> a;
+  a.push_back(1.5); a.push_back(2);
+  A.push_back(a);
+  a.clear();
+  a.push_back(3); a.push_back(4);
+  A.push_back(a);
 
+  cout<<"\n\t Matrix A:\n";
+  for(unsigned int i=0; i<A.size(); i++)
+  {
+    vector<double> row = A[i];
+    copy(row.begin(), row.end(), std::ostream_iterator<double>(std::cout, "\t "));
+    cout<<"\n";
+  }
+  
+  B = transpose(A);
+
+  cout<<"\n\t Matrix B:\n"<< "\t B size " << B.size()<< "\n";
+  for(unsigned int i=0; i<B.size(); i++)
+  {
+    vector<double> rowB = B[i];
+    copy(rowB.begin(), rowB.end(), std::ostream_iterator<double>(std::cout, "\t "));
+    cout<<"\n";
+  }
   
   return 0;
   

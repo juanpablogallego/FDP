@@ -221,6 +221,49 @@ vector<double> integrate(vector<double> &_poly)
 };
 
 /*
+ * 	Transpose a Matrix
+ * 
+ */
+
+vector<vector<double>> transpose(vector<vector<double> > & A)
+{
+  vector<vector<double> > transA; //[A.size()][A.size()];
+  vector<double> column;
+  
+  for(unsigned int j=0; j<A.size(); j++)
+  {
+    column.clear();
+    for(unsigned int i=0; i<A.size(); i++)
+    {
+      vector<double> row = A[i];
+      column.push_back(row[j]);
+    }
+    transA.push_back(column);
+  }
+  /*vector<vector<double> > B;
+  for(unsigned int i; i<A.size(); i++)
+  {
+    vector<double> newrow = A[i];
+    for(unsigned int j; j<A.size(); j++)
+    {
+      newrow.push_back(transA[i][j]);
+    }
+    B.push_back(newrow);
+  }*/
+  return transA;
+};
+
+/*vector<vector<double> > operator|= (vector<vector<double> >& A, void)
+{
+  vector<vector<double>> B = transpose(A);
+  return B;
+};*/
+
+
+
+
+
+/*
  * Retuns The Legendre Coefficients for Polynomial Basis recursively
  */
 
