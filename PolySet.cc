@@ -191,6 +191,18 @@ void Polynomial::integrate()
   set_polynom(b);
 };
 
+/*
+ * 	Definite integral of the polynomial
+ */
+
+double Polynomial::integrate ( double a, double b)
+{
+  integrate();
+  double c =eval(b)- eval(a);
+  return c;
+};
+
+
 void Polynomial::set_name ( string _name)
 {
   name=_name;
@@ -323,3 +335,21 @@ Polynomial diff(Polynomial &a)
   b.diff();
   return b;
 };
+
+void diff(vector<double> &polycoef)
+{
+  vector<double> _temp_coef=polycoef;
+  polycoef.clear();
+  for(unsigned int i = 1; i < _temp_coef.size(); i++)
+  {
+    polycoef.push_back(_temp_coef[i]*i);
+  }
+};
+
+double poly_element_norm(Polynomial &poly)
+{
+  Polynomial poly_square = polymult(poly,poly);
+  double norm = poly_square.integrate(-1, 1);
+  return sqrt(norm);
+};
+

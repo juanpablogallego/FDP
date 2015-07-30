@@ -1,6 +1,7 @@
 #include<iostream>
 #include<vector>
 #include<string>
+#include<math.h>
 
 using namespace std;
 
@@ -46,6 +47,7 @@ public:
   void diff();
   void write();
   void integrate();
+  double integrate(double, double);
   void set_polynom(vector<double>&);
   
 };
@@ -84,6 +86,7 @@ public:
   BasisFuncType get_base(int);
   void poly_mult(BasisFuncType);
   void integrate_base();
+  void normalize_base();
 };
 
 /*
@@ -179,15 +182,45 @@ void GeneralPolyBasis<BasisFuncType, BasicFuncCoef>::integrate_base()
   }
 };
 
+
+/*
+ * 	Normalize the base of polynomials
+ */
+
+template<typename BasisFuncType, typename BasicFuncCoef>
+void GeneralPolyBasis<BasisFuncType, BasicFuncCoef>::normalize_base()
+{
+  for(unsigned int i =0; i<basis_size; i++)
+    basis[i] = basis[i]/poly_element_norm(basis[i]);
+};
+
+/*
+ * 	Divition operator between a polynimial and a number
+ */
+template<typename Number>
+Polynomial operator/(Polynomial& a, Number b )
+{
+  Polynomial poly_c;
+  vector<double> c, a_coef=a.get_coef();
+  for(unsigned int i=0;i<a_coef.size();i++)
+    c.push_back(a_coef[i]/b);
+  poly_c.set_polynom(c);
+  return poly_c;
+};
+
+
 /*
  * 	Additional functions for polynomials defined en PolySet.cc
  */
 
-vector<double> polymult(vector<double> a, vector<double> b);
+vector<double> polymult(vector<double> , vector<double> );
 
-Polynomial polymult(Polynomial &a, Polynomial &b);
+Polynomial polymult(Polynomial &, Polynomial &);
 
-Polynomial integrate(Polynomial &a);
+Polynomial integrate(Polynomial &);
 
-Polynomial diff(Polynomial &a);
+Polynomial diff(Polynomial &);
 
+void diff(vector<double> &);
+
+double poly_element_norm(Polynomial& );

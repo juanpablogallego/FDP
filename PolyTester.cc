@@ -5,6 +5,7 @@
 //#include"PolySet.h"
 //#include"utilities.h"
 #include"fe_definitions.h"
+#include"Quadratures.h"
 
 using namespace std;
 
@@ -141,12 +142,13 @@ int main()
 
   //		Mass matrix generation
   {
-      int order = 4;
+      int order = 3;
   
   vector<vector<double> > coef = LegendreCoefficients(order);
   typedef GeneralPolyBasis<Polynomial, vector<vector<double> > > BasisType;
 
   BasisType Basis(order, coef);
+  Basis.normalize_base();
   
   vector<vector<double> > Matrix;
   CreateMassMatrix(Basis, Matrix);
@@ -204,6 +206,18 @@ int main()
   cout << "} \n";
   
   }
+  
+  vector<double> quadrature;
+  quadrature=GaussQuadratureNodes(5);
+  cout << "\n \t Quadrature : \t {";
+  copy(quadrature.begin(), quadrature.end(), std::ostream_iterator<double>(std::cout, ", "));
+  cout << "} \n";
+  
+  vector<double> weights;
+  weights = GaussQuadratureWeights(quadrature);
+  cout << "\n \t Weights : \t {";
+  copy(weights.begin(), weights.end(), std::ostream_iterator<double>(std::cout, ", "));
+  cout << "} \n";
   
   return 0;
 };
