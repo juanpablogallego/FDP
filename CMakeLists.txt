@@ -2,7 +2,7 @@ project(fdp)
 
 set(CMAKE_CXX_FLAGS "-std=c++0x")
 
-# function_tester.cc main.cc
-add_executable(fdp PolyTester.cc fdgrid.cc utilities.cc cons_law.cc PolySet.cc Quadratures.cc)
+#  main.cc PolyTester.cc
+add_executable(fdp function_tester.cc fdgrid.cc utilities.cc cons_law.cc PolySet.cc )
 
 install(TARGETS fdp RUNTIME DESTINATION bin)

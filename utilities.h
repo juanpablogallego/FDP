@@ -68,3 +68,6 @@ double poly_eval (std::vector<double> &, double );
 
 std::vector<double> integrate(std::vector<double> &);
 
+std::vector<std::vector<double>> transpose(std::vector<std::vector<double>>& );
+
+//std::vector<std::vector<double> > operator|= (std::vector<std::vector<double> > & );
