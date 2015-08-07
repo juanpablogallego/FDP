@@ -14,7 +14,7 @@ int main(int argc, char **argv) {
 	
 	//Create the 1D grid
 	int dim=1;
-	FD_grid grid (-5,5,501);
+	FD_grid grid (-5,5,1001);
 
 /*	//	Verify if the grid actually works
 	int n=grid.get_num_nodes();

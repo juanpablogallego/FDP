@@ -39,6 +39,7 @@ public:
   void set_ic(std::vector<double>&,std::vector<double>&); 					// Evaluate Initial Condition (const x,u) for now
   void get_state(std::vector<double>&);							// Return state of conservation laws
   void write_results(const char*);							// Write results in a file
+  void write_char(const char* , std::vector<std::pair<double, double> > &, double);		// Write the characteristic curves
   void run();
   
   // template functions to be defined here in the header file
@@ -48,8 +49,7 @@ public:
   template <typename InputVector, typename StateVector, typename type_dt> StateVector OneStepScheme(InputVector&, StateVector&, type_dt);
   
 	    // Characteristic analysis
-  template <typename OutputVector, typename SpaceVector, typename StateVector, typename type_dt>
-  OutputVector CharLine(SpaceVector, StateVector, type_dt);				// Create a characteristic line (2 values). Input param: (x0, u0, dt)
+  template <typename Number> std::pair<Number, Number> CharLine(Number, Number, Number);				// Create a characteristic line (2 values). Input param: (x0, u0, dt)
 
   
   

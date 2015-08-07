@@ -77,6 +77,52 @@ void FD_Conservation_Laws::write_results(const char* filename)
   printResults.close();  
 };
 
+
+
+void FD_Conservation_Laws::write_char(const char* filename, std::vector<std::pair<double, double> > &CharLines, double dt)
+{
+  std::ofstream printResults;
+  printResults.open (filename);
+  printResults << "# Characteristic lines time: \n";
+  printResults << "# \t t \t lines\n";
+  
+  // Initial point of the characteristics
+  //printResults << "";
+  for(unsigned int i=0; i < CharLines.size(); i+10)
+  {
+    std::pair<double,double> par = CharLines[i];
+    printResults << par.first << "\t 0 \n"; //<< u[i] << "\n";
+    printResults << par.second << "\t "<< dt << " \n \n";
+  }
+
+  /*printResults << "\n";
+  /// Final point of the characteristics
+  for(unsigned int i=0; i < CharLines.size(); i++)
+  {
+    std::pair<double,double> par = CharLines[i];
+    printResults << par.second << "\t"; //<< u[i] << "\n";
+  }//*/
+  
+  printResults.close();  
+};
+
+
+/*
+ * 	Characteristic lines:
+ * 	- Make two points (at t = 0 and t = dt) from a specific initial condition and save each one of them in a pair (x0, x_dt)
+ * 	- Input: Space coordinate coordinate_0, Value of the state at the coordinate_0 state_0, and time slot width dt.
+ */
+template <typename Number>
+std::pair<Number,Number> FD_Conservation_Laws::CharLine(Number coordinate_0, Number state_0, Number dt)
+{
+  std::pair<Number, Number> Char_Points(coordinate_0, coordinate_0 + state_0*dt);
+  
+  return Char_Points;
+  //Characteristic.push_back(Char_Points);
+  //Characteristic.push_back(Char_Point_2);
+  
+};
+
 /*
  * 	Main sequence of time evolution
  * 	TODO: Create a parameter class to abvoid recompiling every time a constant value is changed
@@ -87,7 +133,10 @@ void FD_Conservation_Laws::run()
   double t=0.0;
   
   std::string outputname = "burgers-";
+  std::string charname = "burg_char-";
+
   std::string extension = ".dat";
+
   int width_seq = 4;
   
   int step_number=0, plots_number=20;
@@ -107,6 +156,13 @@ void FD_Conservation_Laws::run()
     u = OneStepScheme(x, u, dt);
     flux = Burgers_1D_Flux(u);
     
+    std::vector<std::pair<double, double>> CValues;
+    for(unsigned int i=0; i<x.size();i++)
+    {
+      std::pair<double, double> charpair = CharLine<double>(x[i], u[i], dt);//CharLine<double>(x[i], u[i], dt);
+      CValues.push_back(charpair);
+    }
+    
     if(t>next_w_time)
     {
       step_number++;
@@ -114,24 +170,11 @@ void FD_Conservation_Laws::run()
       
       const char * _filename = Gen_Seq_File_Names(outputname, extension, width_seq, step_number);
       write_results(_filename);
+      
+      const char * _filenamechar = Gen_Seq_File_Names(charname, extension, width_seq, step_number);
+      write_char(_filenamechar, CValues, dt);
     }
     t+=dt;
   } 
 };
 
-/*
- * 	Characteristic lines:
- * 	- Make two points (at t = 0 and t = dt) from a specific initial condition and save each one of them as a pair (x,t) = (coordenada espacial, tiempo)
- * 	- Input: Space coordinates coordinate_0, Value of the state at the coordinate_0 state_0, and time slot width dt.
- */
-template <typename OutputVector, typename SpaceVector, typename StateVector, typename type_dt>
-OutputVector FD_Conservation_Laws::CharLine(SpaceVector coordinate_0, StateVector state_0, type_dt dt)
-{
-  std::vector< std::pair<SpaceVector, type_dt> > Char_Point_1(coordinate_0, 0);
-  std::vector< std::pair<SpaceVector, type_dt> > Char_Point_2(coordinate_0 + state_0*dt);
-  
-  std::vector<OutputVector> Characteristic;
-  Characteristic.push_back(Char_Point_1);
-  Characteristic.push_back(Char_Point_2);
-  
-};

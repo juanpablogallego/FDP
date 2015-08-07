@@ -1,6 +1,6 @@
 #include<iostream>
 #include"cons_law.h"
-//#include"fdgrid.h"
+#include"fdgrid.h"
 #include<iterator>
 #include<cstdlib>
 
@@ -24,7 +24,7 @@ int main()
 	FD_Conservation_Laws claw(grid, dim);
 
 	//	Read initial condition and store it in state
-	vector<double> state;
+	std::vector<double> state;
 	claw.get_state(state);
 	
 
