@@ -88,20 +88,20 @@ void FD_Conservation_Laws::write_char(const char* filename, std::vector<std::pai
   
   // Initial point of the characteristics
   //printResults << "";
-  for(unsigned int i=0; i < CharLines.size(); i+10)
+  std::pair<double,double> par1 = CharLines[0];
+  for(unsigned int i=1; i < CharLines.size(); i++)
   {
-    std::pair<double,double> par = CharLines[i];
-    printResults << par.first << "\t 0 \n"; //<< u[i] << "\n";
-    printResults << par.second << "\t "<< dt << " \n \n";
+    std::pair<double,double> par2 = CharLines[i];
+    if(par1.second>par2.second)
+    {
+      printResults << par1.first << "\t 0 \n"; //<< u[i] << "\n";    
+      printResults << par1.second << "\t "<< 10*dt << " \n \n";  
+      
+      printResults << par2.first << "\t 0 \n"; //<< u[i] << "\n";    
+      printResults << par2.second << "\t "<< 10*dt << " \n \n";      
+    }
+    par1=par2;
   }
-
-  /*printResults << "\n";
-  /// Final point of the characteristics
-  for(unsigned int i=0; i < CharLines.size(); i++)
-  {
-    std::pair<double,double> par = CharLines[i];
-    printResults << par.second << "\t"; //<< u[i] << "\n";
-  }//*/
   
   printResults.close();  
 };
@@ -115,7 +115,7 @@ void FD_Conservation_Laws::write_char(const char* filename, std::vector<std::pai
 template <typename Number>
 std::pair<Number,Number> FD_Conservation_Laws::CharLine(Number coordinate_0, Number state_0, Number dt)
 {
-  std::pair<Number, Number> Char_Points(coordinate_0, coordinate_0 + state_0*dt);
+  std::pair<Number, Number> Char_Points(coordinate_0, coordinate_0 + 100*state_0*dt);
   
   return Char_Points;
   //Characteristic.push_back(Char_Points);
