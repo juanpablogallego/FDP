@@ -8,6 +8,8 @@ using namespace std;
 
 //--------------------------------------------------------------------------------------------------------------------
 //		Classes for the domain discretzation in cells
+//--------------------------------------------------------------------------------------------------------------------
+
 template<typename PolyBasisCoef>
 class Cell				// General class
 {
@@ -21,7 +23,7 @@ class Cell				// General class
   PolyBasisCoef coef;
 public:
   Cell();						// Constructors
-  Cell(vector<int>&,vector<int>&, PolyBasisCoef);
+  Cell(int, vector<int>&,vector<int>&, PolyBasisCoef);
   
   void set_corners(vector<int>&);			// Set functions
   void set_neighbours(vector<int>&);
@@ -29,6 +31,7 @@ public:
   void set_faces(vector<int>&);
   void set_coef(vector<double>&);
   
+  int get_id();
   vector<int> get_corners();				// Get Functions
   vector<int> get_neighbours();
   vector<int> get_edges();
@@ -44,14 +47,20 @@ Cell<PolyBasisCoef>::Cell()
 
 };
 
+//	One dimensional constructors
 template<typename PolyBasisCoef>
-Cell<PolyBasisCoef>::Cell (vector< int >& _corners, vector< int >& _neighbors, PolyBasisCoef _coef)
+Cell<PolyBasisCoef>::Cell (int _id, vector< int >& _corners, vector< int >& _neighbors, PolyBasisCoef _coef)
 {
-
+  cell_id = _id;
+  neighbors =_neighbors;
+  corners = _corners;
+  coef = _coef;
 };
 
 
-
+//-----------------------------------------------------------
+//		Set Functions
+//-----------------------------------------------------------
 
 template<typename PolyBasisCoef>
 void Cell<PolyBasisCoef>::set_corners(vector<int>& _corners)
@@ -81,6 +90,15 @@ template<typename PolyBasisCoef>
 void Cell<PolyBasisCoef>::set_coef(vector<double>& _coef)
 {
   coef=_coef;
+};
+
+//-----------------------------------------------------------
+//		Get Functions
+//-----------------------------------------------------------
+template<typename PolyBasisCoef>
+int Cell<PolyBasisCoef>::get_id()
+{
+  return cell_id;
 };
 
 template<typename PolyBasisCoef>
@@ -113,9 +131,9 @@ vector<double> Cell<PolyBasisCoef>::get_coef()
   return coef;
 };
 
-//*/
-
+//-----------------------------------------------------------
 //		Square type of cells
+//-----------------------------------------------------------
 
 template<typename PolyBasisCoef>
 class Square : Cell<PolyBasisCoef>
@@ -128,7 +146,7 @@ class Square : Cell<PolyBasisCoef>
   vector<int> neighbors;		// can be ordered left 0, right 1, botom 2, top 3.
   vector<int> edges;			// Edges of the square
   vector<int> child;			// Children in case of refinement
-  PolyBasisCoef TrialFuncCoef;
+  PolyBasisCoef coef;
 public:
   Square();
   Square(vector<int>&, vector< int >& , PolyBasisCoef );
@@ -145,10 +163,14 @@ Square<PolyBasisCoef>::Square ( vector< int >& _corners, vector< int >& _neighbo
 {
   Square();
   corners=_corners;
+  neighbors = _neighbors;
+  coef = _coef;
 };
 
 //--------------------------------------------------------------------------------------------------------------------
 //		Finite Element Grid
+//--------------------------------------------------------------------------------------------------------------------
+
 template <typename Points, typename TypeBasis, typename TypeBasisCoef>
 class FE_grid : FD_grid
 {
@@ -179,17 +201,20 @@ FE_grid<Points, TypeBasis, TypeBasisCoef>::FE_grid()
 template <typename Points, typename TypeBasis, typename TypeBasisCoef>
 FE_grid<Points, TypeBasis, TypeBasisCoef>::FE_grid(vector<Points>& _nodes)
 {
-
+  Nodes = _nodes;
 };
 
 template <typename Points, typename TypeBasis, typename TypeBasisCoef>
 FE_grid<Points, TypeBasis, TypeBasisCoef>::FE_grid(vector<Points>& _nodes, vector<vector<int> >& _triang)
 {
-
+  Nodes = _nodes;
+  Triangulation = _triang;
 };
 
 template <typename Points, typename TypeBasis, typename TypeBasisCoef>
 FE_grid<Points, TypeBasis, TypeBasisCoef>::FE_grid(vector<Points>& _nodes, vector<vector<int> >& _triang, GeneralPolyBasis<TypeBasis, TypeBasisCoef>& _basis)
 {
-
+  Nodes = _nodes;
+  Triangulation = _triang;
+  PolyBasis = _basis;
 };

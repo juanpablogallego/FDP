@@ -95,10 +95,10 @@ void FD_Conservation_Laws::write_char(const char* filename, std::vector<std::pai
     if(par1.second>par2.second)
     {
       printResults << par1.first << "\t 0 \n"; //<< u[i] << "\n";    
-      printResults << par1.second << "\t "<< 10*dt << " \n \n";  
+      printResults << par1.second << "\t "<< 5*dt << " \n \n";  
       
       printResults << par2.first << "\t 0 \n"; //<< u[i] << "\n";    
-      printResults << par2.second << "\t "<< 10*dt << " \n \n";      
+      printResults << par2.second << "\t "<< 5*dt << " \n \n";      
     }
     par1=par2;
   }
@@ -115,7 +115,7 @@ void FD_Conservation_Laws::write_char(const char* filename, std::vector<std::pai
 template <typename Number>
 std::pair<Number,Number> FD_Conservation_Laws::CharLine(Number coordinate_0, Number state_0, Number dt)
 {
-  std::pair<Number, Number> Char_Points(coordinate_0, coordinate_0 + 100*state_0*dt);
+  std::pair<Number, Number> Char_Points(coordinate_0, coordinate_0 + 5*state_0*dt);
   
   return Char_Points;
   //Characteristic.push_back(Char_Points);
