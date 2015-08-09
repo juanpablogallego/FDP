@@ -1,3 +1,6 @@
+#include<iostream>
+#include<fstream>
+#include<string>
 #include"fdgrid.h"
 
 /*
@@ -168,4 +171,17 @@ void FD_grid::move_nodes(std::vector<double> dn)
   }
 };
 
-class FD_grid;
+/*void FD_grid::export_grid(const char *file_name)
+{
+  std::ifstream grid_file;
+  grid_file.open(file_name);
+  
+  grid_file << "# Nodes \n";
+  for(unsigned int i=0; i<num_nodes; i++)
+  {
+    grid_file << i << "\t"<< nodes[i]<<"\n";
+  }
+  
+  grid_file.close();
+};//*/
+

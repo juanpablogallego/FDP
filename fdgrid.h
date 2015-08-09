@@ -20,10 +20,10 @@ class FD_grid
    *	      std::vector<std::vector<double> > corners;
 };//*/
 public:
-  FD_grid(void);
+  FD_grid();
   FD_grid(double,double,int);
   FD_grid(double,double,double);
-  void set_param(double initial_node, double final_node, int num_nodes);		// set the parameters of the grid
+  void set_param(double initial_node, double final_node, int num_nodes);	// set the parameters of the grid
   void set_param(double initial_node, double final_node, double node_space);	// set the parameters of the grid
   void set_nodes(void);								// set the nodes of the grid
   void set_nodes(std::vector<double>);
@@ -33,5 +33,6 @@ public:
   void create_multid_nodes(int);
   void move_nodes(std::vector<double>);
   double get_dx();
+  void export_grid(const char *);
 };
 

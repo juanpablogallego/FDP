@@ -23,7 +23,7 @@ class Cell				// General class
   PolyBasisCoef coef;
 public:
   Cell();						// Constructors
-  Cell(int, vector<int>&,vector<int>&, PolyBasisCoef);
+  Cell(int, vector<int>&,vector<int>&); 		// Put this line to add the coefficients , PolyBasisCoef
   
   void set_corners(vector<int>&);			// Set functions
   void set_neighbours(vector<int>&);
@@ -49,12 +49,12 @@ Cell<PolyBasisCoef>::Cell()
 
 //	One dimensional constructors
 template<typename PolyBasisCoef>
-Cell<PolyBasisCoef>::Cell (int _id, vector< int >& _corners, vector< int >& _neighbors, PolyBasisCoef _coef)
+Cell<PolyBasisCoef>::Cell (int _id, vector< int >& _corners, vector< int >& _neighbors) //, PolyBasisCoef _coef
 {
   cell_id = _id;
   neighbors =_neighbors;
   corners = _corners;
-  coef = _coef;
+  //coef = _coef;
 };
 
 
@@ -188,6 +188,8 @@ public:
     void set_triangulation(vector<vector<int> >&);
     void set_polybasis(GeneralPolyBasis<TypeBasis, TypeBasisCoef>&);
     void set_grid(); 					// Should be generated internally, no need for argument vector<Cell<TypeBasisCoef> > &
+    void set_1d_grid();
+    void generate_triangulation();
 };
 
 template <typename Points, typename TypeBasis, typename TypeBasisCoef>
@@ -202,6 +204,7 @@ template <typename Points, typename TypeBasis, typename TypeBasisCoef>
 FE_grid<Points, TypeBasis, TypeBasisCoef>::FE_grid(vector<Points>& _nodes)
 {
   Nodes = _nodes;
+  set_1d_grid();
 };
 
 template <typename Points, typename TypeBasis, typename TypeBasisCoef>
