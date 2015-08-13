@@ -6,7 +6,8 @@
 #include<vector>
 
 
-#include"utilities.h"
+//#include"utilities.h"
+#include"Quadratures.h"
 
 using namespace std;
 
@@ -77,7 +78,7 @@ int main()
   cout <<"\n \t factorial \t"<<n <<"\n";
   */
   
-  vector<vector<double> > A, B;
+  /*vector<vector<double> > A, B;
   vector<double> a;
   a.push_back(1.5); a.push_back(2);
   A.push_back(a);
@@ -101,7 +102,16 @@ int main()
     vector<double> rowB = B[i];
     copy(rowB.begin(), rowB.end(), std::ostream_iterator<double>(std::cout, "\t "));
     cout<<"\n";
-  }
+  }//*/
+  
+  vector<long double> points, weights;
+  int p = 15;
+  GaussQuadratureNodes(p, points, weights);
+  cout<<"\n\t Quadrature nodes \n";
+  copy(points.begin(), points.end(), std::ostream_iterator<double>(std::cout, "\t "));
+
+  cout<<"\n\t Quadrature weights \n";
+  copy(weights.begin(), weights.end(), std::ostream_iterator<double>(std::cout, "\t "));  
   
   return 0;
   

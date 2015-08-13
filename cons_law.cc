@@ -147,7 +147,8 @@ void FD_Conservation_Laws::run()
   while(t < finalT)
   {
     //double max_u = MyMaxEntry<std::vector<double>, double>(u);
-    double max_u = MyMaxEntry(u);
+    double max_u;
+    max_u = MyMaxEntry<std::vector<double>, double> (u);
 
     double dt = 0.5*dx/max_u;
     

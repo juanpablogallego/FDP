@@ -21,10 +21,10 @@ using namespace std;
 /*
  * 	Returns the maximum entrance of a vector
  */
-
-double MyMaxEntry(vector<double>& vector)
+template<typename Number>
+Number MyMaxEntry(vector<Number>& vector)
 {
-  double a=vector[0];					// Store the first value of the vector
+  Number a=vector[0];					// Store the first value of the vector
   for(unsigned int i=1; i<vector.size(); i++)		// Sweep the vector
     a=(a>vector[i]?a:vector[i]);			// Store the maximum between elements of the vector
   return a;						// Return the maximum value
@@ -52,7 +52,8 @@ const char * Gen_Seq_File_Names(string root_name, string extension, int width, i
 /*
  * 	Complete a vector with zeros while trying to sum or substract with a bigger vector
  */
-void fillzeros(vector<double>& a, int number)
+template<typename Number>
+void fillzeros(vector<Number>& a, int number)
 {
   for(unsigned int i=0; i<number; i++)
     a.push_back(0);
@@ -61,14 +62,15 @@ void fillzeros(vector<double>& a, int number)
 /*
  * 	Add double vectors using the operator "+"
  */
-vector<double> operator+(vector<double>& a,vector<double>& b)
+template<typename Number>
+vector<Number> operator+(vector<Number>& a,vector<Number>& b)
 {
   int n=a.size()-b.size();
   if(n<0)
     fillzeros(a, -n);
   else if(n>0)
     fillzeros(b, n);
-  vector<double> c;
+  vector<Number> c;
   for(unsigned int i=0;i<a.size();i++)
     c.push_back(a[i]+b[i]);
   return c;
@@ -77,14 +79,15 @@ vector<double> operator+(vector<double>& a,vector<double>& b)
 /*
  * 	Substract double vectors using the operator "-"
  */
-vector<double> operator-(vector<double>& a,vector<double>& b)
+template<typename Number>
+vector<Number> operator-(vector<Number>& a,vector<Number>& b)
 {
   int n=a.size()-b.size();
   if(n<0)
     fillzeros(a, -n);
   else if(n>0)
     fillzeros(b, n);
-  vector<double> c;
+  vector<Number> c;
   for(unsigned int i=0;i<a.size();i++)
     c.push_back(a[i]-b[i]);
   return c;
@@ -93,9 +96,10 @@ vector<double> operator-(vector<double>& a,vector<double>& b)
 /*
  * 	Scalar product between double vectors using the operator "*"
  */
-double operator*(vector<double>& a,vector<double>& b)
+template<typename Number>
+Number operator*(vector<Number>& a,vector<Number>& b)
 {
-  double c=0;
+  Number c=0;
   for(unsigned int i=0;i<a.size();i++)
     c+=a[i]*b[i];
   return c;
@@ -104,9 +108,10 @@ double operator*(vector<double>& a,vector<double>& b)
 /*
  * 	Scalar product between a double and a double vectors using the operator "*"
  */
-vector<double> operator*(double a, vector< double >& b)
+template <typename Number>
+vector<Number> operator*(Number a, vector< Number >& b)
 {
-  vector<double> c;
+  vector<Number> c;
   for(unsigned int i=0;i<b.size();i++)
     c.push_back(a*b[i]);
   return c;
@@ -115,9 +120,10 @@ vector<double> operator*(double a, vector< double >& b)
 /*
  * 	Scalar product between a integer and a double vectors using the operator "*"
  */
-vector<double> operator*(int a, vector< double >& b)
+template <typename Number>
+vector<Number> operator*(int a, vector< Number >& b)
 {
-  vector<double> c;
+  vector<Number> c;
   for(unsigned int i=0;i<b.size();i++)
     c.push_back(a*b[i]);
   return c;
@@ -126,9 +132,10 @@ vector<double> operator*(int a, vector< double >& b)
 /*
  * 	Vector division over integer value using operator "/".
  */
-vector<double> operator/(vector< double >& a, int b )
+template<typename Number>
+vector<Number> operator/(vector< Number >& a, int b )
 {
-  vector<double> c;
+  vector<Number> c;
   for(unsigned int i=0;i<a.size();i++)
     c.push_back(a[i]/b);
   return c;
@@ -137,9 +144,11 @@ vector<double> operator/(vector< double >& a, int b )
 /*
  * 	Vector division over double value using operator "/".
  */
-vector<double> operator/(vector< double >& a, double b )
+
+template<typename Number>
+vector<Number> operator/(vector< Number >& a, Number b )
 {
-  vector<double> c;
+  vector<Number> c;
   for(unsigned int i=0;i<a.size();i++)
     c.push_back(a[i]/b);
   return c;
@@ -149,9 +158,10 @@ vector<double> operator/(vector< double >& a, double b )
  * 	Matrix vector multiplication
  */
 
-vector<double> multiAx(vector<vector<double> > &A, vector<double> &x)
+template<typename Number>
+vector<Number> multiAx(vector<vector<Number> > &A, vector<Number> &x)
 {
-  vector<double> b, temp;
+  vector<Number> b, temp;
   for(unsigned int i = 0; i < A.size(); i++)
   {
     temp = A[i];
@@ -160,7 +170,8 @@ vector<double> multiAx(vector<vector<double> > &A, vector<double> &x)
   return b;
 };//*/
 
-vector<double> operator*(vector< vector<double> > &A, vector< double >&x)
+template<typename Number>
+vector<Number> operator*(vector< vector<Number> > &A, vector< Number >&x)
 {
   return multiAx(A,x);
 }
@@ -169,23 +180,11 @@ vector<double> operator*(vector< vector<double> > &A, vector< double >&x)
 /*
  * 	Norm of a double vector
  */
-double Norm(vector<double> a)
+template<typename Number>
+Number Norm(vector<Number> a)
 {
-  double norm=a*a;
+  Number norm=a*a;
   return sqrt(norm);
-};
-
-// 	Unsing vector of coeffitients
-vector<double> polymult(vector<double> a, vector<double> b)
-{
-  int size = a.size()+b.size()-1;
-  vector<double> c(size, 0.0);
-  for(unsigned int i = 0; i < a.size(); i++)
-  {
-    for(unsigned int j = 0; j < b.size(); j++)
-      c[i+j]+=a[i]*b[j];
-  }
-  return c;
 };
 
 /*
@@ -198,16 +197,7 @@ int factorial(int a)
   else if((a>1)) return a*=factorial(a-1);
 };
 
-double poly_eval (vector<double> &_poly, double _value)
-{
-  double value=0.0, power=1.0;
-  for(unsigned int i = 0; i < _poly.size(); i++)
-  {
-    value+=_poly[i]*power;
-    power*=_value;
-  }
-  return value;
-};
+
 
 vector<double> integrate(vector<double> &_poly)
 {
@@ -264,31 +254,44 @@ vector<vector<double>> transpose(vector<vector<double> > & A)
 
 
 
+// 	Unsing vector of coeffitients
+template<typename Number>
+std::vector<Number> polymult(std::vector<Number> a, std::vector<Number> b)
+{
+  int size = a.size()+b.size()-1;
+  std::vector<Number> c(size, 0.0);
+  for(unsigned int i = 0; i < a.size(); i++)
+  {
+    for(unsigned int j = 0; j < b.size(); j++)
+      c[i+j]+=a[i]*b[j];
+  }
+  return c;
+};
 
 /*
  * Retuns The Legendre Coefficients for Polynomial Basis recursively
  */
-
-vector<vector<double> > LegendreCoefficients(int max_degree) //LegendrePolynomials
+//template<typename Number>
+std::vector<std::vector<long double> > LegendreCoefficients(int max_degree) 
 {
-  vector<double> temp_row;
-  vector<vector<double> > polyset;
+  std::vector<long double> temp_row;
+  std::vector<std::vector<long double> > polyset;
 
-  temp_row.push_back(1);		// 1/sqrt(2)
-  polyset.push_back(temp_row);  
+  temp_row.push_back(1);
+  polyset.push_back(temp_row);
   if(max_degree>0)
   {
-    temp_row.clear();    
-    temp_row.push_back(0);  
-    temp_row.push_back(1);		// sqrt(3)/sqrt(2)
+    temp_row.clear();
+    temp_row.push_back(0);
+    temp_row.push_back(1);
     polyset.push_back(temp_row);
     if( max_degree > 1 )
     {
       for(unsigned int j = 2; j <= max_degree; j++)
       {
-	double n = j -1;
-	vector<double> x = polyset[1], poly_1=polyset[j-1], poly_2=polyset[j-2];
-	poly_1 = polymult(x,poly_1);
+	long double n = j -1;
+	std::vector<long double> x = polyset[1], poly_1=polyset[j-1], poly_2=polyset[j-2];
+	poly_1 = polymult<long double>(x,poly_1);
 	poly_1 = (2*n+1)*poly_1;
 	poly_2 = n * poly_2;	
 	temp_row = (poly_1 - poly_2);

@@ -300,10 +300,24 @@ void PolyBasis::write()
  */
 
 
-//	Using polynomials
-Polynomial polymult(Polynomial &a, Polynomial &b)
+template<typename Number>
+std::vector<Number> polymult(std::vector<Number> a, std::vector<Number> b)
 {
-  vector<double> c = polymult(a.get_coef(), b.get_coef());
+  int size = a.size()+b.size()-1;
+  std::vector<Number> c(size, 0.0);
+  for(unsigned int i = 0; i < a.size(); i++)
+  {
+    for(unsigned int j = 0; j < b.size(); j++)
+      c[i+j]+=a[i]*b[j];
+  }
+  return c;
+};
+
+//	Using polynomials
+template<typename Number>
+Polynomial poly_mult(Polynomial &a, Polynomial &b)
+{
+  vector<Number> c = polymult<Number>(a.get_coef(), b.get_coef());
   Polynomial poly_c(b.get_id(), c);
   return poly_c;
 };
@@ -336,20 +350,12 @@ Polynomial diff(Polynomial &a)
   return b;
 };
 
-void diff(vector<double> &polycoef)
-{
-  vector<double> _temp_coef=polycoef;
-  polycoef.clear();
-  for(unsigned int i = 1; i < _temp_coef.size(); i++)
-  {
-    polycoef.push_back(_temp_coef[i]*i);
-  }
-};
 
-double poly_element_norm(Polynomial &poly)
+template<typename Number>
+Number poly_element_norm(Polynomial &poly)
 {
-  Polynomial poly_square = polymult(poly,poly);
-  double norm = poly_square.integrate(-1, 1);
+  Polynomial poly_square = poly_mult(poly,poly);
+  Number norm = poly_square.integrate(-1, 1);
   return sqrt(norm);
 };
 

@@ -213,14 +213,28 @@ Polynomial operator/(Polynomial& a, Number b )
  * 	Additional functions for polynomials defined en PolySet.cc
  */
 
-vector<double> polymult(vector<double> , vector<double> );
+//template<typename Number>
+//vector<Number> polymult(vector<Number> , vector<Number> );
 
-Polynomial polymult(Polynomial &, Polynomial &);
+Polynomial poly_mult(Polynomial &, Polynomial &);
 
 Polynomial integrate(Polynomial &);
 
 Polynomial diff(Polynomial &);
 
-void diff(vector<double> &);
+//template<typename Number>
+//void diff(vector<Number> &);
 
-double poly_element_norm(Polynomial& );
+template<typename Number>
+void diff(vector<Number> &polycoef)
+{
+  vector<Number> _temp_coef=polycoef;
+  polycoef.clear();
+  for(unsigned int i = 1; i < _temp_coef.size(); i++)
+  {
+    polycoef.push_back(_temp_coef[i]*i);
+  }
+};
+
+template<typename Number>
+Number poly_element_norm(Polynomial& );
