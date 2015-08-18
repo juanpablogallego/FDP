@@ -50,3 +50,27 @@ void CreateMassMatrix(BasisType Basis, vector<vector<double> > &Matrix)
   }
 };
 
+template <typename Number>
+Number burgers_flux(Number u)
+{
+  Number flux = u*u;
+  return flux;
+};
+
+/*
+ * 	Evaluates different fluxes dependidn on the equation
+ */
+template <typename Number>
+Number eval_flux(Number u)
+{
+  Number flux = burgers_flux<Number>(u);
+  return flux;
+};
+
+template <typename Number>
+Number lax_friedrich(Number in, Number out, Number alpha)
+{
+  Number flux;
+  flux = 0.5*((out + in) + alpha*(eval_flux<Number>(out)- eval_flux<Number>(in)));
+};
+

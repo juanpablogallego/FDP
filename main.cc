@@ -31,6 +31,8 @@ int main(int argc, char **argv) {
 	// FD_Conservation_Laws claw(grid, dim);
 	
 	//	Save initial Condition
+	// claw.write_results(filename);
+	
 	const char *filename = "grid.dat";
 	std::ofstream printResults;
 	
@@ -47,8 +49,6 @@ int main(int argc, char **argv) {
 	output_fn(printResults, Title2, triangulation);
 	
 	printResults.close();
-	
-	// claw.write_results(filename);
 	
 	//	Run Conservation law
 	// claw.run();
