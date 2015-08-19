@@ -128,3 +128,11 @@ TypeBasisCoef FE_grid<Points, TypeBasis, TypeBasisCoef>::get_coef_cell(int i)
     TypeBasisCoef coef = _cell.get_coef();
     return coef;
 };
+
+template <typename Points, typename TypeBasis, typename TypeBasisCoef>
+TypeBasisCoef FE_grid<Points, TypeBasis, TypeBasisCoef>::get_corners(int i)
+{
+    Cell<TypeBasisCoef> _cell= Grid[i];
+    TypeBasisCoef corners = _cell.get_corners();
+    return corners;
+};

@@ -16,17 +16,17 @@
 using namespace std;
 
 //template <typename Number>
-vector<long double> GaussQuadratureWeights(vector<long double> & nodes)
+vector<double> GaussQuadratureWeights(vector<double> & nodes)
 {
   int p = nodes.size();
-  vector<long double> weights(p);
-  vector<vector<long double> >  Legendre = LegendreCoefficients(p);
-  vector<long double> poly = Legendre[p];
-  diff<long double>(poly);
+  vector<double> weights(p);
+  vector<vector<double> >  Legendre = LegendreCoefficients(p);
+  vector<double> poly = Legendre[p];
+  diff<double>(poly);
   
   for(unsigned int i = 0; i < p; i++)
   {
-    long double f_xi = poly_eval<long double>(poly, nodes[i]);
+    double f_xi = poly_eval<double>(poly, nodes[i]);
     weights[i]=2/((1-nodes[i]*nodes[i])*(f_xi*f_xi));
   }
   return weights;
@@ -36,16 +36,16 @@ vector<long double> GaussQuadratureWeights(vector<long double> & nodes)
 //void GaussQuadratureNodes(int, vector<Number>&, vector<Number>&);
 
 //template<typename Number>
-void GaussQuadratureNodes ( int p, vector<long double> &_points, vector<long double> &_weights)
+void GaussQuadratureNodes ( int p, vector<double> &_points, vector<double> &_weights)
 {
   if(p<1)
   {
     std::cout << "\n\t Wrong polynomial order! \n";
-    vector<long double> points;
+    vector<double> points;
     points.push_back(-1);
     //return points;
   }
-  vector<long double> points(p), weights(p);
+  vector<double> points(p), weights(p);
   switch(p)
   {
     case 1:
@@ -165,7 +165,7 @@ void GaussQuadratureNodes ( int p, vector<long double> &_points, vector<long dou
 	    getline(quad_file, input_line);
 	    stringstream _input_line(input_line);
 	    int j;
-	    long double weight, point;
+	    double weight, point;
 	    _input_line >> j >> weight >> point;
 	    points[i]=point;
 	    weights[i] = weight;

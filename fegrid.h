@@ -234,8 +234,8 @@ public:
     
     int get_dim();
     int get_num_cells();
-    double get_min_dx();
     vector<Points> get_nodes();
+    double get_min_dx();
     vector<vector<int>> get_triangulation();
     
     /*
@@ -244,6 +244,7 @@ public:
     
     void set_coef_cell(int, TypeBasisCoef &);
     TypeBasisCoef get_coef_cell(int);
+    vector<Points> get_corners(int);
 
 };
 
