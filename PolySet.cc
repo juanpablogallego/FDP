@@ -314,9 +314,13 @@ std::vector<Number> polymult(std::vector<Number> a, std::vector<Number> b)
 };
 
 //	Using polynomials
-template<typename Number>
-Polynomial poly_mult(Polynomial &a, Polynomial &b)
+//template<typename Number>
+Polynomial polymult(Polynomial &a, Polynomial &b)
 {
+  /*vector<Number> c = polymult<Number>(a.get_coef(), b.get_coef());
+  Polynomial poly_c(b.get_id(), c);
+  return poly_c;//*/
+  typedef double Number;
   vector<Number> c = polymult<Number>(a.get_coef(), b.get_coef());
   Polynomial poly_c(b.get_id(), c);
   return poly_c;
@@ -354,7 +358,7 @@ Polynomial diff(Polynomial &a)
 template<typename Number>
 Number poly_element_norm(Polynomial &poly)
 {
-  Polynomial poly_square = poly_mult(poly,poly);
+  Polynomial poly_square = polymult(poly,poly);
   Number norm = poly_square.integrate(-1, 1);
   return sqrt(norm);
 };

@@ -2,7 +2,7 @@
 #include<vector>
 
 #include"fdgrid.h"
-#include"fe_definitions.h"
+#include"PolySet.h"
 
 using namespace std;
 
@@ -13,13 +13,15 @@ using namespace std;
 template<typename PolyBasisCoef>
 class Cell				// General class
 {
-  int dim, num_corners, 
+  int dim, num_corners,
       num_edges, num_faces, 		// parameters of the general class
       cell_id, ref_level;	
   vector<int> corners;			// Template parameter can be eather int for 1D or vectors for 2 and 3D
   vector<int> neighbors;		// can be ordered left 0, right 1, botom 2, top 3, front 4, behind 5
   vector<int> edges;
   vector<int> faces;
+  vector<double> center;
+  vector<double> normals;		// normal vectors in each "important" interface
   PolyBasisCoef coef;
 public:
   Cell();						// Constructors
@@ -30,6 +32,8 @@ public:
   void set_edges(vector<int>&);
   void set_faces(vector<int>&);
   void set_coef(vector<double>&);
+  void set_normal(vector<double>&);
+  void set_center(vector<double>&);
   
   int get_id();
   vector<int> get_corners();				// Get Functions
@@ -37,6 +41,10 @@ public:
   vector<int> get_edges();
   vector<int> get_faces();
   vector<double> get_coef();
+  vector<vector<double> > get_normals();
+  vector<double> get_center();
+  
+  vector<double> operator=(vector<double> &);
 };
 
 	  // TODO: Fill the constructors for the cell class
@@ -62,6 +70,21 @@ Cell<PolyBasisCoef>::Cell ( int& _id, vector< int >& _corners, vector< int >& _n
 //		Set Functions
 //-----------------------------------------------------------
 
+
+template<typename PolyBasisCoef>
+void Cell<PolyBasisCoef>::set_normal(vector<double> & normal_vector)
+{
+  normals=normal_vector;
+};
+
+template<typename PolyBasisCoef>
+void Cell<PolyBasisCoef>::set_center(vector<double> &_center)
+{
+  center=_center;
+};
+
+
+/*
 template<typename PolyBasisCoef>
 void Cell<PolyBasisCoef>::set_corners(vector<int>& _corners)
 {
@@ -91,10 +114,19 @@ void Cell<PolyBasisCoef>::set_coef(vector<double>& _coef)
 {
   coef=_coef;
 };
+//*/
 
 //-----------------------------------------------------------
 //		Get Functions
 //-----------------------------------------------------------
+
+template<typename PolyBasisCoef>
+vector<int> Cell<PolyBasisCoef>::get_neighbours()
+{
+  return neighbors;
+};
+
+/*
 template<typename PolyBasisCoef>
 int Cell<PolyBasisCoef>::get_id()
 {
@@ -105,12 +137,6 @@ template<typename PolyBasisCoef>
 vector<int> Cell<PolyBasisCoef>::get_corners()
 {
   return corners;
-};
-
-template<typename PolyBasisCoef>
-vector<int> Cell<PolyBasisCoef>::get_neighbours()
-{
-  return neighbors;
 };
 
 template<typename PolyBasisCoef>
@@ -130,6 +156,18 @@ vector<double> Cell<PolyBasisCoef>::get_coef()
 {
   return coef;
 };
+
+template<typename PolyBasisCoef>
+vector<vector<double> > Cell<PolyBasisCoef>::get_normals()
+{
+  return normals;
+};
+
+template<typename PolyBasisCoef>
+vector<double> Cell<PolyBasisCoef>::get_center()
+{
+  return center;
+};//*/
 
 //-----------------------------------------------------------
 //		Square type of cells
@@ -174,6 +212,7 @@ Square<PolyBasisCoef>::Square ( vector< int >& _corners, vector< int >& _neighbo
 template <typename Points, typename TypeBasis, typename TypeBasisCoef>
 class FE_grid //: public FD_grid
 {
+  double dx;						// Minimum dx of the grid
   int dim, num_cells;
   vector<Points> Nodes;
   vector<vector<int> > Triangulation;			// Tree that determines the neighbours of each Cell
@@ -193,8 +232,18 @@ public:
     void set_1d_grid();
     void generate_triangulation();
     
+    int get_dim();
+    int get_num_cells();
+    double get_min_dx();
     vector<Points> get_nodes();
     vector<vector<int>> get_triangulation();
+    
+    /*
+     * 	Functions to modify and obtain values directly from a specific cell in the vector Grid.
+     */
+    
+    void set_coef_cell(int, TypeBasisCoef &);
+    TypeBasisCoef get_coef_cell(int);
 
 };
 
@@ -263,7 +312,6 @@ void FE_grid<Points, TypeBasis, TypeBasisCoef>::set_nodes_1d(double initial_node
     x=x+node_space;
     Nodes.push_back(x);
   }
-  //Nodes.push_back(final_node);
   num_nodes=Nodes.size();
   Nodes[num_nodes-1]= final_node;
   cout<< "\n \t Number of nodes: " << num_nodes;
@@ -274,6 +322,7 @@ void FE_grid<Points, TypeBasis, TypeBasisCoef>::set_nodes_1d(double initial_node
 template <typename Points, typename TypeBasis, typename TypeBasisCoef>
 void FE_grid<Points, TypeBasis, TypeBasisCoef>::set_1d_grid()
 {
+  dx = 1.0e14;
   for(unsigned int i = 0; i < Nodes.size()-1; i++)
   {
     int id = i;
@@ -281,13 +330,22 @@ void FE_grid<Points, TypeBasis, TypeBasisCoef>::set_1d_grid()
     cell_nodes.push_back(Nodes[i]);
     cell_nodes.push_back(Nodes[i+1]);
     
+    double diametro = Nodes[i+1]-Nodes[i];
+    dx = (dx < diametro)? dx : diametro;		// Set the smallest cell diameter
+    
+    vector<double> center, norms;
+    center.push_back((Nodes[i+1]+Nodes[i])/2);
+    norms.push_back(-1); norms.push_back(1);
     neighbors.push_back(i-1);
     neighbors.push_back(i+1);
     
     Cell<TypeBasisCoef> _cell(id, cell_nodes, neighbors);
+    _cell.set_center(center);
+    _cell.set_normal(norms);
     
     Grid.push_back(_cell);
   }
+  num_cells = Grid.size();
 };
 
 template  <typename Points, typename TypeBasis, typename TypeBasisCoef>

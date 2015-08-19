@@ -2,21 +2,16 @@
 #include<fstream>
 #include<vector>
 #include<string.h>
-#include"cons_law.h"
-#include"utilities.h"
 
+#include"cons_law.h"
+#include"fe_definitions.h"
 
 /*
  *	Initial Condition for the one-dimenstional Burgers equation, in this case it is an exponential bump exp(-(10x)^2)
  */
 void FD_Conservation_Laws::set_ic(std::vector<double>& x, std::vector<double>& u0)
 {
-  for(unsigned int i = 0; i < x.size(); i++)
-  {
-    double x0 = -x[i]*x[i];
-    x0 = exp(x0);
-    u0.push_back(x0);
-  }
+  gaussian(x,u0);
 };
 
 /*
@@ -179,3 +174,23 @@ void FD_Conservation_Laws::run()
   } 
 };
 
+
+template <typename GridType> 
+void DG_Conservation_Laws<GridType>::set_equ_flux(std::string & fluxtype)
+{
+  switch(fluxtype)
+  {
+    case "advection":
+      flux_type = advection;
+    case "burgers":
+      flux_type = burgers;
+    case "euler":
+      flux_type= euler;
+    case "maxwell":
+      flux_type = maxwell;
+    case "mhd":
+      flux_type = mhd;
+    default:
+      cout<<"Error, not a valid flux function"; break;
+  }
+};

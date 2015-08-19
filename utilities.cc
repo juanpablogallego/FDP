@@ -79,15 +79,15 @@ vector<Number> operator+(vector<Number>& a,vector<Number>& b)
 /*
  * 	Substract double vectors using the operator "-"
  */
-template<typename Number>
-vector<Number> operator-(vector<Number>& a,vector<Number>& b)
+//template<typename Number>
+vector<double> operator-(vector<double>& a,vector<double>& b)
 {
   int n=a.size()-b.size();
   if(n<0)
     fillzeros(a, -n);
   else if(n>0)
     fillzeros(b, n);
-  vector<Number> c;
+  vector<double> c;
   for(unsigned int i=0;i<a.size();i++)
     c.push_back(a[i]-b[i]);
   return c;
@@ -272,10 +272,10 @@ std::vector<Number> polymult(std::vector<Number> a, std::vector<Number> b)
  * Retuns The Legendre Coefficients for Polynomial Basis recursively
  */
 //template<typename Number>
-std::vector<std::vector<long double> > LegendreCoefficients(int max_degree) 
+std::vector<std::vector<double> > LegendreCoefficients(int max_degree) 
 {
-  std::vector<long double> temp_row;
-  std::vector<std::vector<long double> > polyset;
+  std::vector<double> temp_row;
+  std::vector<std::vector<double> > polyset;
 
   temp_row.push_back(1);
   polyset.push_back(temp_row);
@@ -289,9 +289,9 @@ std::vector<std::vector<long double> > LegendreCoefficients(int max_degree)
     {
       for(unsigned int j = 2; j <= max_degree; j++)
       {
-	long double n = j -1;
-	std::vector<long double> x = polyset[1], poly_1=polyset[j-1], poly_2=polyset[j-2];
-	poly_1 = polymult<long double>(x,poly_1);
+	double n = j -1;
+	std::vector<double> x = polyset[1], poly_1=polyset[j-1], poly_2=polyset[j-2];
+	poly_1 = polymult<double>(x,poly_1);
 	poly_1 = (2*n+1)*poly_1;
 	poly_2 = n * poly_2;	
 	temp_row = (poly_1 - poly_2);

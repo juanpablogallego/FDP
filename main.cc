@@ -7,32 +7,20 @@
 #include<string.h>
 
 //#include"fdgrid.h"
-#include"cons_law.h"
+//#include"cons_law.h"
 #include"fegrid.h"
 #include"output_fns.h"
+//#include"Quadratures.h"
 
 int main(int argc, char **argv) {
 	
 	//Create the 1D grid
-	int dim=1;
-	FE_grid<double, Polynomial, vector<double>> grid (-5,5,101);
-	//grid.get_triangulation();
+	int dim=1, n=101;
+	FE_grid<double, Polynomial, vector<double>> grid (-5,5,n);
+	grid.set_1d_grid();
+	grid.set_triangulation();
 
-/*	//	Verify if the grid actually works
-	int n=grid.get_num_nodes();
-      	std::cout<<"Number of nodes: "<< n<<std::endl;
-      	std::vector<double> v(n);
-      	grid.get_nodes(v);
-      	std::copy(v.begin(), v.end(), std::ostream_iterator<double>(std::cout, " \n"));
-	std::cout<<"\n";
-//*/
-
-	//	Create the Conservation Law object
-	// FD_Conservation_Laws claw(grid, dim);
-	
-	//	Save initial Condition
-	// claw.write_results(filename);
-	
+	// Write grid in a file
 	const char *filename = "grid.dat";
 	std::ofstream printResults;
 	
@@ -49,6 +37,24 @@ int main(int argc, char **argv) {
 	output_fn(printResults, Title2, triangulation);
 	
 	printResults.close();
+	
+	// Run test case
+	
+
+	//	Verify if the grid actually works
+	//int n=grid.get_num_nodes();
+      	//std::cout<<"Number of nodes: "<< n<<std::endl;
+      	//std::vector<double> v(n);
+      	//grid.get_nodes(v);
+      	//std::copy(v.begin(), v.end(), std::ostream_iterator<double>(std::cout, " \n"));
+	//std::cout<<"\n";
+//*/
+
+	//	Create the Conservation Law object
+	// FD_Conservation_Laws claw(grid, dim);
+	
+	//	Save initial Condition
+	// claw.write_results(filename);
 	
 	//	Run Conservation law
 	// claw.run();

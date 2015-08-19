@@ -1,3 +1,6 @@
+#include<iostream>
+#include<iterator>
+
 #include"PolySet.h"
 #include"utilities.h"
 
@@ -46,7 +49,7 @@ void CreateMassMatrix(BasisType Basis, vector<vector<double> > &Matrix)
     matrix_row = eval_baseM - eval_basem;
     Matrix.push_back(matrix_row);
     cout<<"\n";
-    copy(matrix_row.begin(), matrix_row.end(), std::ostream_iterator<double>(std::cout, "\t "));
+    copy(matrix_row.begin(), matrix_row.end(), ostream_iterator<double>(std::cout, "\t "));
   }
 };
 

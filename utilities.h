@@ -31,11 +31,15 @@ template <typename InputVector, typename OutputValue> OutputValue MyMaxEntry(Inp
 
 const char * Gen_Seq_File_Names(std::string, std::string, int, int );
 
+
 template<typename Number>
 std::vector<Number> operator+(std::vector<Number>&,std::vector<Number>&);
 
-template<typename Number>
-std::vector<Number> operator-(std::vector<Number>&,std::vector<Number>&);
+//template<typename Number>
+std::vector<double> operator-(std::vector<double>& ,std::vector<double>& );
+
+//template<typename Number>
+//std::vector<Number> operator=(std::vector<Number> , std::vector<Number> );
 
 template<typename Number>
 Number operator*(std::vector<Number>&,std::vector<Number>&);

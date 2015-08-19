@@ -146,8 +146,12 @@ BasisFuncType GeneralPolyBasis<BasisFuncType, BasicFuncCoef>::get_base(int i)
 template<typename BasisFuncType, typename BasicFuncCoef>
 void GeneralPolyBasis<BasisFuncType, BasicFuncCoef>::poly_mult(BasisFuncType poly)
 {
+  typedef double Number;
   for(unsigned int i = 0; i < basis_size; i++)
-    basis[i]=polymult(poly,basis[i]);
+  {
+    BasisFuncType _temp = basis[i];
+    basis[i]=polymult(poly,_temp);
+  }
 };
 
 //	Write the basis functions in a understandable manner
@@ -213,10 +217,11 @@ Polynomial operator/(Polynomial& a, Number b )
  * 	Additional functions for polynomials defined en PolySet.cc
  */
 
-//template<typename Number>
-//vector<Number> polymult(vector<Number> , vector<Number> );
+template<typename Number>
+vector<Number> polymult(vector<Number> , vector<Number> );
 
-Polynomial poly_mult(Polynomial &, Polynomial &);
+//template<typename Number>
+Polynomial polymult(Polynomial &, Polynomial &);
 
 Polynomial integrate(Polynomial &);
 
