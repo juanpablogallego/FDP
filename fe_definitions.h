@@ -51,26 +51,46 @@ void CreateMassMatrix(BasisType Basis, vector<vector<double> > &Matrix)
 };
 
 template <typename Number>
-Number burgers_flux(Number u)
+Number burgers_flux1D(Number u)
 {
   Number flux = u*u;
   return flux;
 };
 
-/*
- * 	Evaluates different fluxes dependidn on the equation
- */
 template <typename Number>
-Number eval_flux(Number u)
+Number advect_flux1D(Number a, Number u)
 {
-  Number flux = burgers_flux<Number>(u);
+  Number flux = a*u;
   return flux;
 };
 
+/*
+ * 	Evaluates different fluxes depending on the equation
+ * 	TODO: Add the swiching between different equations
+ */
 template <typename Number>
-Number lax_friedrich(Number in, Number out, Number alpha)
+Number eval_flux(Number u, string &fluxtype, Number a=0)
+{
+  switch(fluxtype)
+  {
+    case "advection":
+    {
+      Number flux = advect_flux1D<Number>(u);
+      return flux;
+    }
+    
+    case "burgers":
+    {
+      Number flux = burgers_flux1D<Number>(u);
+      return flux;
+    }
+  }
+};
+
+template <typename Number>
+Number lax_friedrich(Number in, Number out, Number alpha, string &fluxtype, Number a=0)
 {
   Number flux;
-  flux = 0.5*((out + in) + alpha*(eval_flux<Number>(out)- eval_flux<Number>(in)));
+  flux = 0.5*((out + in) + alpha*(eval_flux<Number>(out, fluxtype, a)- eval_flux<Number>(in, fluxtype, a)));
 };
 

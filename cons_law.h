@@ -104,3 +104,43 @@ InputVector FD_Conservation_Laws::Burgers_1D_Flux(InputVector& u)
   }
   return flux;
 };
+
+
+
+
+/*--------------------------------------------------------------------------------------------------
+ * 	Discontinuous Galerkin Conservation Law Object
+ *--------------------------------------------------------------------------------------------------
+ */
+
+
+class DG_Conservation_Laws
+{
+  int dim, n;
+  double dx;
+  //GridType grid;
+  std::vector<double> x, y, z; // Coordinates
+  std::vector<double> u, u0; 	// State and Initial Condition
+  std::vector<double> flux;	// Evaluation of the flux function
+  enum ConservFlux {advection, burgers, euler, maxwell, mhd};
+public:
+  
+  // Constant type functions to be defined in cons_law.cc
+  void set_dimension(int);								// TODO: Update code for higher dimensions
+  void set_ic(std::vector<double>&,std::vector<double>&); 					// Evaluate Initial Condition (const x,u) for now
+  void get_state(std::vector<double>&);							// Return state of conservation laws
+  void write_results(const char*);							// Write results in a file
+  void write_char(const char* , std::vector<std::pair<double, double> > &, double);		// Write the characteristic curves
+  void run();
+  
+  // template functions to be defined here in the header file
+  template <typename GridType> DG_Conservation_Laws(GridType& );			// Constructors
+  template <typename GridType> DG_Conservation_Laws(GridType& , int); 		
+  template <typename InputVector, typename StateVector, typename type_dt> StateVector OneStepScheme(InputVector&, StateVector&, type_dt);
+  
+	    // Characteristic analysis
+  template <typename Number> std::pair<Number, Number> CharLine(Number, Number, Number);				// Create a characteristic line (2 values). Input param: (x0, u0, dt)
+
+  
+  
+};
