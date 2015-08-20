@@ -187,6 +187,10 @@ void GeneralPolyBasis<BasisFuncType, BasicFuncCoef>::integrate_base()
 };
 
 
+template<typename Number, typename BasisFuncType>
+Number poly_element_norm(BasisFuncType& );
+
+
 /*
  * 	Normalize the base of polynomials
  */
@@ -195,7 +199,11 @@ template<typename BasisFuncType, typename BasicFuncCoef>
 void GeneralPolyBasis<BasisFuncType, BasicFuncCoef>::normalize_base()
 {
   for(unsigned int i =0; i<basis_size; i++)
-    basis[i] = basis[i]/poly_element_norm(basis[i]);
+  {
+    BasisFuncType poly=basis[i];
+    double norm=poly_element_norm<double, BasisFuncType>(poly);
+    basis[i] = poly/norm;
+  }
 };
 
 /*
@@ -240,6 +248,3 @@ void diff(vector<Number> &polycoef)
     polycoef.push_back(_temp_coef[i]*i);
   }
 };
-
-template<typename Number>
-Number poly_element_norm(Polynomial& );

@@ -6,22 +6,39 @@
 #include<cstdlib>
 #include<string.h>
 
-//#include"fdgrid.h"
-//#include"cons_law.h"
-#include"fegrid.h"
-#include"output_fns.h"
-//#include"Quadratures.h"
+
+#include"cons_law.h"		// Should include just one library to call all the rest
+				// TODO: everything must be done through parameters.
+
 
 int main(int argc, char **argv) {
+  
+  //create Conservation law object
+  std::string cl_flux = "advection";
+  std::string cl_ic = "step1D";
+  int dim =1, n = 101, p=2;
+  DG_Conservation_Laws claw(cl_flux , cl_ic,  dim , n, p);
 	
 	//Create the 1D grid
-	int dim=1, n=101;
-	FE_grid<double, Polynomial, vector<double>> grid (-5,5,n);
+	/*int dim=1, n=101;
+	FE_grid<double, vector<double>> grid (-5,5,n);
 	grid.set_1d_grid();
-	grid.set_triangulation();
-
+	grid.set_triangulation();//*/
+	
+	// Create Polynomial basis
+	/*int order = 2;
+	vector<vector<double> > coef = LegendreCoefficients(order);
+	typedef GeneralPolyBasis<Polynomial, vector<vector<double> > > BasisType;
+	
+	BasisType Basis(order, coef);
+	Basis.normalize_base();
+  
+	vector<vector<double> > Matrix;
+	CreateMassMatrix(Basis, Matrix);//*/
+	
+	
 	// Write grid in a file
-	const char *filename = "grid.dat";
+	/*const char *filename = "grid.dat";
 	std::ofstream printResults;
 	
 	printResults.open (filename);
@@ -36,7 +53,7 @@ int main(int argc, char **argv) {
 	string Title2 ="# Triangulation";
 	output_fn(printResults, Title2, triangulation);
 	
-	printResults.close();
+	printResults.close();//*/
 	
 	// Run test case
 	

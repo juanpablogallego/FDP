@@ -91,6 +91,6 @@ std::vector<std::vector<Number>> transpose(std::vector<std::vector<Number>>& );
 //std::vector<std::vector<double> > operator|= (std::vector<std::vector<double> > & );
 
 //template<typename Number>
-std::vector<std::vector<long double> > LegendreCoefficients(int);
+std::vector<std::vector<double> > LegendreCoefficients(int);
 
 

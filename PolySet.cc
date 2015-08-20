@@ -354,11 +354,10 @@ Polynomial diff(Polynomial &a)
   return b;
 };
 
-
-template<typename Number>
-Number poly_element_norm(Polynomial &poly)
+template<typename Number, typename BasisFuncType>
+Number poly_element_norm(BasisFuncType &poly)
 {
-  Polynomial poly_square = polymult(poly,poly);
+  BasisFuncType poly_square = polymult(poly,poly);
   Number norm = poly_square.integrate(-1, 1);
   return sqrt(norm);
 };

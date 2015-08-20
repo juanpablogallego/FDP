@@ -95,44 +95,49 @@ vector<double> Cell<PolyBasisCoef>::operator=(vector<double> &b)
   return a;
 };
 
-template <typename Points, typename TypeBasis, typename TypeBasisCoef>
-int FE_grid<Points, TypeBasis, TypeBasisCoef>::get_dim()
+/*
+ * -----------------------------------------------------------------------
+ *		FE_grid functions
+ * ----------------------------------------------------------------------- 
+ */
+
+/*template <typename Points, typename TypeBasis, typename TypeBasisCoef>
+void FE_grid<Points, TypeBasis, TypeBasisCoef>::set_polybasis(GeneralPolyBasis<Polynomial, vector<double>>& _basis)
+{
+    PolyBasis = _basis;
+};//*/
+
+template <typename Points, typename TypeBasisCoef> //template <typename Points, typename TypeBasis, typename TypeBasisCoef>
+int FE_grid<Points, TypeBasisCoef>::get_dim()
 {
   return dim;
 };
 
-template <typename Points, typename TypeBasis, typename TypeBasisCoef>
-int FE_grid<Points, TypeBasis, TypeBasisCoef>::get_num_cells()
+template <typename Points, typename TypeBasisCoef> //template <typename Points, typename TypeBasis, typename TypeBasisCoef>
+int FE_grid<Points, TypeBasisCoef>::get_num_cells()
 {
   return num_cells;
 };
 
-template <typename Points, typename TypeBasis, typename TypeBasisCoef>
-double FE_grid<Points, TypeBasis, TypeBasisCoef>::get_min_dx()
-{
-  return dx;
-};
-
-
-template <typename Points, typename TypeBasis, typename TypeBasisCoef>
-void FE_grid<Points, TypeBasis, TypeBasisCoef>::set_coef_cell(int i, TypeBasisCoef & _coef)
+template <typename Points, typename TypeBasisCoef> //template <typename Points, typename TypeBasis, typename TypeBasisCoef>
+void FE_grid<Points, TypeBasisCoef>::set_coef_cell(int i, TypeBasisCoef & _coef)
 {
   Cell<TypeBasisCoef> _cell= Grid[i];
   _cell.set_coef(_coef);
 };
 
-template <typename Points, typename TypeBasis, typename TypeBasisCoef>
-TypeBasisCoef FE_grid<Points, TypeBasis, TypeBasisCoef>::get_coef_cell(int i)
+template <typename Points, typename TypeBasisCoef> //template <typename Points, typename TypeBasis, typename TypeBasisCoef>
+TypeBasisCoef FE_grid<Points, TypeBasisCoef>::get_coef_cell(int i)
 {
     Cell<TypeBasisCoef> _cell= Grid[i];
     TypeBasisCoef coef = _cell.get_coef();
     return coef;
 };
 
-template <typename Points, typename TypeBasis, typename TypeBasisCoef>
-TypeBasisCoef FE_grid<Points, TypeBasis, TypeBasisCoef>::get_corners(int i)
+template <typename Points, typename TypeBasisCoef> //template <typename Points, typename TypeBasis, typename TypeBasisCoef>
+vector<Points> FE_grid<Points, TypeBasisCoef>::get_corners(int i)
 {
     Cell<TypeBasisCoef> _cell= Grid[i];
-    TypeBasisCoef corners = _cell.get_corners();
+    vector<Points> corners = _cell.get_corners();
     return corners;
 };

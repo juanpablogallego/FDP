@@ -1,8 +1,6 @@
 #include<math.h>
 
 #include"initial_condition.h"
-#include"cons_law.h"
-#include "fegrid.h"
 
 void step1D(std::vector<double> &x, std::vector<double> &u0)
 {
@@ -25,11 +23,5 @@ void gaussian(std::vector<double> &x, std::vector<double> &u0)
   }
 };
 
-template<typename GridType> 
-void DG_Conservation_Laws<GridType>::set_ic(std::vector<double>& _x, std::vector<double>& _u0)
-{
-  for(unsigned int i = 0; i < n; i++)
-  {
-    
-  }
-};
+
+

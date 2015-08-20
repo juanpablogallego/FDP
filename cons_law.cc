@@ -1,10 +1,10 @@
 #include<iostream>
 #include<fstream>
 #include<vector>
-#include<string.h>
+#include<string>
 
 #include"cons_law.h"
-#include"fe_definitions.h"
+#include"utilities.h"
 
 /*
  *	Initial Condition for the one-dimenstional Burgers equation, in this case it is an exponential bump exp(-(10x)^2)
@@ -174,23 +174,111 @@ void FD_Conservation_Laws::run()
   } 
 };
 
-
-template <typename GridType> 
-void DG_Conservation_Laws<GridType>::set_equ_flux(std::string & fluxtype)
+//***********************************************************************************************************************
+/*
+ * ---------------------------------------------------------------------------------------------------------------------------
+ * 		Constructor for the DG conservation laws
+ *  Receives as parameters the grid, the order of the polynomial p, the number of equations, and the flux function to use.
+ *  It should do the following steps:
+ *  - Read and store the grid
+ *  - Calculate the degrees of freedom per cell and over all the domain.
+ *  - Store the minimum volume of the grid in order to calculate the maximum time step (for explicit evolution). The grid is 
+ *    supposed to be cartesian.
+ *  - Store constants like number of equations, cfl number, number of cells.
+ *  - Set the type of conservation flux to compute.
+ *  - Calculate the initial condition.
+ * --------------------------------------------------------------------------------------------------------------------------
+ */
+DG_Conservation_Laws::DG_Conservation_Laws (std::string &cl_flux , std::string &cl_ic,  int _dim = 1, int _n = 101, int _p = 2)
 {
-  switch(fluxtype)
+  	
+  dim=_dim;
+  n=_n;
+  
+  FE_grid<double, vector<double>> grid (-5,5,n);
+  grid.set_1d_grid();
+  grid.set_triangulation();
+//  dim = grid.get_dim();				// get dimension
+  
+  p=_p;
+  int dof1D = p + 1;
+  dof=dx=1;  
+  for(unsigned int i=0;i<dim; i++)		// Q poly basis, calculate degrees of freedom
+  {
+    dof = dof*dof1D;
+    dx=dx*grid.get_min_dx();
+  }
+  cfl = 0.5;					// Default CFL number
+  
+  set_equ_flux(cl_flux);			// Set the equation to solve according to the flux function
+  set_ic(cl_ic);				// Set the initial condition
+  
+  GaussQuadratureNodes(10, q_points, weights);	// Quadrature rule
+  // TODO :	Continue with the initialization procedure and then define the run function
+};//*/
+
+//	WARNING	:	SWITCH does not work with strings
+void DG_Conservation_Laws::set_equ_flux(std::string & _fluxtype)// TODO : 	Change the switch to the if then format
+{
+  if(_fluxtype.find("advection"))
+    flux_type = advection;
+
+/*  switch(fluxtype)
   {
     case "advection":
       flux_type = advection;
+      break;
     case "burgers":
       flux_type = burgers;
+      break;
     case "euler":
       flux_type= euler;
+      break;
     case "maxwell":
       flux_type = maxwell;
+      break;
     case "mhd":
       flux_type = mhd;
+      break;
     default:
-      cout<<"Error, not a valid flux function"; break;
+      cout<<"Error, not a valid flux function";
+      break;
+  }*/
+};
+
+//template <typename GridType> 
+double DG_Conservation_Laws::NumInt(vector<double>& _fn)
+{
+  double result(0);
+  for(unsigned int i=0; i< _fn.size(); i++)
+    result+=_fn[i]*weights[i];
+  return result;
+};
+
+
+//	WARNING	:	SWITCH does not work with strings
+void DG_Conservation_Laws::set_ic(std::string & ictype)		// TODO : 	Change the switch to the if then format
+{
+  if(ictype.find("step1D"))
+    ic = step1D;
+
+  /*switch(ictype)
+  {
+    case "step1D":
+      ic = step1D;
+    case "gaussian1D":
+      ic = gaussian1D;
+    default:
+      cout<<"Error, not a valid initial condition"; break;
+  }*/
+};
+
+
+// TODO : STILL missing the procedure to set the initial condition for DG
+void DG_Conservation_Laws::calculate_ic(std::vector<double>& _x, std::vector<double>& _u0)
+{
+  for(unsigned int i = 0; i < n; i++)		// Loop over the cells of the grid
+  {
+    
   }
 };
