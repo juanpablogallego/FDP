@@ -2,7 +2,7 @@
 
 #include"initial_condition.h"
 
-void step1D(std::vector<double> &x, std::vector<double> &u0)
+void eval_step1D (std::vector<double> &x, std::vector<double> &u0)
 {
   for(unsigned int i = 0; i<x.size(); i++)
   {
@@ -13,7 +13,7 @@ void step1D(std::vector<double> &x, std::vector<double> &u0)
   }
 };
 
-void gaussian(std::vector<double> &x, std::vector<double> &u0)
+void eval_gaussian(std::vector<double> &x, std::vector<double> &u0)
 {
   for(unsigned int i = 0; i < x.size(); i++)
   {
@@ -23,5 +23,17 @@ void gaussian(std::vector<double> &x, std::vector<double> &u0)
   }
 };
 
+double eval_step1D (double x)
+{
+  double u0;
+  if(x<0)
+    return u0=2;
+  else
+    return u0=1;
+};
 
-
+double eval_gaussian(double x)
+{
+    double u0 = -x*x;
+    return u0 = exp(u0);
+};

@@ -120,32 +120,34 @@ InputVector FD_Conservation_Laws::Burgers_1D_Flux(InputVector& u)
 
 /*
  * 	TODO: DEFINE THE RUN FUNCTION
+ *	TODO: Update code for higher dimensions
  */
 class DG_Conservation_Laws
 {
   FE_grid<double,vector<double>> grid;
+  GeneralPolyBasis<Polynomial, vector<double>> Basis;
   int dim, n, p, dof, num_states;			// dim: Dimension, n: number of cells, p: order of the polynomial, dof: degrees of freedom
   double dx, cfl, h;			// dx: volume of the cell, cfl: cfl constant, h: ratio between  the timestep and the volume
 //  std::vector<double> x, y, z; // Coordinates
-  std::vector<double> q_points, weights;
+  std::vector<double> q_points, weights, nodes;
   std::vector<double> u, u0, u_old; 	// State and Initial Condition
-  std::vector<double> flux;	// Evaluation of the flux function
+  std::vector<double> flux;		// Evaluation of the flux function
   enum ConservFlux {advection, burgers, euler, maxwell, mhd};
   ConservFlux flux_type;
   enum InitialCond {step1D, gaussian1D};
   InitialCond ic;
-  //enum GridSet {};
 public:
   
   // Constant type functions to be defined in cons_law.cc
   void initialize();
-  //void set_dimension(int);								// TODO: Update code for higher dimensions
   void get_state(std::vector<double>&);							// Return state of conservation laws
   
   void set_equ_flux(std::string &);
   
   void set_ic( string& );
-  void calculate_ic(std::vector<double>&,std::vector<double>&);
+  void eval_ic(vector<double>&, vector<double>&);
+  double eval_ic(double);
+  void calculate_ic();
   
   void write_results(const char*);							// Write results in a file
   void write_char(const char* , std::vector<std::pair<double, double> > &, double);	// Write the characteristic curves

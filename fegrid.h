@@ -82,6 +82,12 @@ void Cell<PolyBasisCoef>::set_center(vector<double> &_center)
   center=_center;
 };
 
+template<typename PolyBasisCoef>
+void Cell<PolyBasisCoef>::set_coef(vector<double>& _coef)
+{
+  coef=_coef;
+};
+
 //-----------------------------------------------------------
 //		Get Functions
 //-----------------------------------------------------------
@@ -90,6 +96,12 @@ template<typename PolyBasisCoef>
 vector<int> Cell<PolyBasisCoef>::get_neighbours()
 {
   return neighbors;
+};
+
+template<typename PolyBasisCoef>
+vector<int> Cell<PolyBasisCoef>::get_corners()
+{
+  return corners;
 };
 
 //-----------------------------------------------------------
@@ -169,7 +181,7 @@ public:
     
     void set_coef_cell(int, TypeBasisCoef &);
     TypeBasisCoef get_coef_cell(int);
-    vector<Points> get_corners(int);
+    vector<int> get_corners(int);
 
 };
 
@@ -224,6 +236,15 @@ double FE_grid<Points, TypeBasisCoef>::get_min_dx()
   return dx;
 };
 
+template <typename Points, typename TypeBasisCoef> //template <typename Points, typename TypeBasis, typename TypeBasisCoef>
+vector<int> FE_grid<Points, TypeBasisCoef>::get_corners(int i)
+{
+    Cell<TypeBasisCoef> _cell= Grid[i];
+    vector<int> corners = _cell.get_corners();
+    return corners;
+};
+
+
 template <typename Points, typename TypeBasisCoef> //template  <typename Points, typename TypeBasis, typename TypeBasisCoef>
 void FE_grid<Points, TypeBasisCoef>::set_nodes_1d(double initial_node, double final_node, int num_nodes)
 {
@@ -251,8 +272,8 @@ void FE_grid<Points, TypeBasisCoef>::set_1d_grid()
   {
     int id = i;
     std::vector<int> cell_nodes, neighbors;
-    cell_nodes.push_back(Nodes[i]);
-    cell_nodes.push_back(Nodes[i+1]);
+    cell_nodes.push_back(i);
+    cell_nodes.push_back(i+1);
     
     double diametro = Nodes[i+1]-Nodes[i];
     dx = (dx < diametro)? dx : diametro;		// Set the smallest cell diameter
@@ -281,4 +302,11 @@ void FE_grid<Points, TypeBasisCoef>::set_triangulation()
     vector<int> neighbor = _cell.get_neighbours();
     Triangulation.push_back(neighbor);
   }
+};
+
+template <typename Points, typename TypeBasisCoef> //template <typename Points, typename TypeBasis, typename TypeBasisCoef>
+void FE_grid<Points, TypeBasisCoef>::set_coef_cell(int i, TypeBasisCoef & _coef)
+{
+  Cell<TypeBasisCoef> _cell= Grid[i];
+  _cell.set_coef(_coef);
 };

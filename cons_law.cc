@@ -5,13 +5,14 @@
 
 #include"cons_law.h"
 #include"utilities.h"
+#include"mappings.h"
 
 /*
  *	Initial Condition for the one-dimenstional Burgers equation, in this case it is an exponential bump exp(-(10x)^2)
  */
 void FD_Conservation_Laws::set_ic(std::vector<double>& x, std::vector<double>& u0)
 {
-  gaussian(x,u0);
+  eval_gaussian(x,u0);
 };
 
 /*
@@ -195,10 +196,14 @@ DG_Conservation_Laws::DG_Conservation_Laws (std::string &cl_flux , std::string &
   dim=_dim;
   n=_n;
   
-  FE_grid<double, vector<double>> grid (-5,5,n);
+  //	Set grid
+  FE_grid<double, vector<double>>  _grid (-5,5,n);
+  grid = _grid;
   grid.set_1d_grid();
   grid.set_triangulation();
-//  dim = grid.get_dim();				// get dimension
+  
+  //	Set basis functions
+  
   
   p=_p;
   int dof1D = p + 1;
@@ -214,6 +219,11 @@ DG_Conservation_Laws::DG_Conservation_Laws (std::string &cl_flux , std::string &
   set_ic(cl_ic);				// Set the initial condition
   
   GaussQuadratureNodes(10, q_points, weights);	// Quadrature rule
+  nodes = grid.get_nodes();
+  
+  calculate_ic();
+  
+
   // TODO :	Continue with the initialization procedure and then define the run function
 };//*/
 
@@ -222,6 +232,16 @@ void DG_Conservation_Laws::set_equ_flux(std::string & _fluxtype)// TODO : 	Chang
 {
   if(_fluxtype.find("advection"))
     flux_type = advection;
+  else if (_fluxtype.find("burgers"))
+    flux_type = burgers;
+  else if (_fluxtype.find("euler"))
+      flux_type= euler;
+  else if (_fluxtype.find("maxwell"))
+      flux_type = maxwell;
+  else if (_fluxtype.find("mhd"))
+      flux_type = mhd;
+  else
+      cout<<"Error, not a valid flux function";
 
 /*  switch(fluxtype)
   {
@@ -261,6 +281,10 @@ void DG_Conservation_Laws::set_ic(std::string & ictype)		// TODO : 	Change the s
 {
   if(ictype.find("step1D"))
     ic = step1D;
+  else if (ictype.find("gaussian1D"))
+      ic = gaussian1D;
+  else
+    cout<<"Error, not a valid initial condition"; 
 
   /*switch(ictype)
   {
@@ -274,11 +298,67 @@ void DG_Conservation_Laws::set_ic(std::string & ictype)		// TODO : 	Change the s
 };
 
 
+// FOR VECTORS
+void DG_Conservation_Laws::eval_ic ( vector< double >&fisical_qpoints, vector< double >& u)
+{
+  switch (ic)
+  {
+    case step1D:
+      eval_step1D(fisical_qpoints, u);
+      break;
+    case gaussian1D:
+      eval_gaussian(fisical_qpoints, u);
+      break;
+    default:
+      cout<<"\n\t Non a valid initial condition \n";
+      break;
+  }
+};
+
+// FOR SIBLE POINTS
+double DG_Conservation_Laws::eval_ic (  double fisical_qpoints)
+{
+  double _u ;
+  switch (ic)
+  {
+    case step1D:
+      _u =eval_step1D(fisical_qpoints);
+      break;
+    case gaussian1D:
+      _u = eval_gaussian(fisical_qpoints);
+      break;
+    default:
+      cout<<"\n\t Non a valid initial condition \n";
+      break;
+  }
+  return _u;
+};
+
+
 // TODO : STILL missing the procedure to set the initial condition for DG
-void DG_Conservation_Laws::calculate_ic(std::vector<double>& _x, std::vector<double>& _u0)
+void DG_Conservation_Laws::calculate_ic()
 {
   for(unsigned int i = 0; i < n; i++)		// Loop over the cells of the grid
   {
+    vector<int> _corners = grid.get_corners(i);						// get the corners of the cell
+    vector<double> _u0(q_points);
+    double a = nodes[_corners[0]], b = nodes[_corners[1]];
+    vector<double> fisical_qpoints (q_points);						// vector to store the local quadrature nodes of the physical domain
     
+    vector<double> integral;
+      
+    for(unsigned int k = 0; k < Basis.get_base_size(); k++)		// For every base function
+    {
+      Polynomial _base_fn = Basis.get_base(k);				// Extract the base k
+      double base_coef = 0;
+      for(unsigned int j=0; j<q_points.size(); j++)
+      {
+	fisical_qpoints[j] = B2FMapPonit1D(q_points[j], a, b);		// Map the position of q_points[j] in the physical domain
+	_u0[j] = eval_ic(fisical_qpoints[j]);				// evaluate the initial condition in the quadrature nodes (physical domain)
+	base_coef += _base_fn.eval(q_points[j])*_u0[j]*weights[j];	// Eval the base k in the q_point[j] and Calculate the integral!!!
+      }
+      integral.push_back(base_coef);					// Store coefficient
+    }
+    grid.set_coef_cell(i,integral);
   }
 };

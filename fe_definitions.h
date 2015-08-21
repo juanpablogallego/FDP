@@ -20,6 +20,21 @@ typedef GeneralPolyBasis<Polynomial, vector<vector<double> > > BasisType;
 
 void CreateMassMatrix(BasisType &, vector<vector<double> > &);		// WARNING: It can happen that the function has to be moved here
 
+//TODO:  Move to a file exclusive for flux functions
+template <typename Number>
+Number burgers_flux1D(Number u)
+{
+  Number flux = u*u;
+  return flux;
+};
+
+template <typename Number>
+Number advect_flux1D(Number a, Number u)
+{
+  Number flux = a*u;
+  return flux;
+};
+
 /*
  * 	Evaluates different fluxes depending on the equation
  * 	TODO: Add the swiching between different equations
@@ -52,19 +67,4 @@ Number lax_friedrich(Number in, Number out, Number alpha, string &fluxtype, Numb
 {
   Number flux;
   flux = 0.5*((out + in) + alpha*(eval_flux<Number>(out, fluxtype, a)- eval_flux<Number>(in, fluxtype, a)));
-};
-
-//TODO:  Move to a file exclusive for flux functions
-template <typename Number>
-Number burgers_flux1D(Number u)
-{
-  Number flux = u*u;
-  return flux;
-};
-
-template <typename Number>
-Number advect_flux1D(Number a, Number u)
-{
-  Number flux = a*u;
-  return flux;
 };
