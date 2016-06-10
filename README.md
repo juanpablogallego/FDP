@@ -9,7 +9,7 @@ Grid used:                      So far a equidistant Cartesian grid is generated
 
 Type of equations:              1D Scalar conservation laws (planning to extend it to multi-dimensional  systems).
 
-Initial conditions implemented: Gaussian bell exp(-x^2).
+Initial conditions implemented: Gaussian bell exp(-x^2), sin(x). and step function.
 
 Test cases implemented:         1D inviscid Burgers' equation.
 
