@@ -1,6 +1,8 @@
 // Author:	Juan Pablo Gallego Valencia
 // Created:	May 2015
 
+#ifndef __FDGRID_H__
+#define __FDGRID_H__
 
 #include<iostream>
 #include<vector>
@@ -36,3 +38,4 @@ public:
   void export_grid(const char *);
 };
 
+#endif

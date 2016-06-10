@@ -1,3 +1,7 @@
+
+#ifndef __POLYSET_H__
+#define __POLYSET_H__
+
 #include<iostream>
 #include<vector>
 #include<string>
@@ -248,3 +252,5 @@ void diff(vector<Number> &polycoef)
     polycoef.push_back(_temp_coef[i]*i);
   }
 };
+
+#endif

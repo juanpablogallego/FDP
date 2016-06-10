@@ -1,3 +1,7 @@
+
+#ifndef __MAPPINGS_H__
+#define __MAPPINGS_H__
+
 #include<iostream>
 
 template <typename Number>
@@ -20,3 +24,5 @@ Number F2BMapPonit1D( Number x, Number a, Number b)
   Number m = 2/(b-a), x0=(a+b)/(b-a), psi;
   return psi = m*x - x0;
 };
+
+#endif
