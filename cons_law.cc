@@ -12,7 +12,7 @@
  */
 void FD_Conservation_Laws::set_ic(std::vector<double>& x, std::vector<double>& u0)
 {
-  eval_gaussian(x,u0);
+  eval_sin(x,u0);
 };
 
 /*
@@ -129,15 +129,18 @@ void FD_Conservation_Laws::run()
   double t=0.0;
   
   std::string outputname = "burgers-";
-  std::string charname = "burg_char-";
+  //std::string charname = "burg_char-";
 
   std::string extension = ".dat";
 
+  // Ploting parameters
   int width_seq = 4;
-  
   int step_number=0, plots_number=20;
-  
   double dt_write=finalT/(plots_number+1), next_w_time=dt_write;
+  
+  // Plot Initial condition
+  const char * _filename = Gen_Seq_File_Names(outputname, extension, width_seq, step_number);
+  write_results(_filename);
   
   
   while(t < finalT)
@@ -168,8 +171,8 @@ void FD_Conservation_Laws::run()
       const char * _filename = Gen_Seq_File_Names(outputname, extension, width_seq, step_number);
       write_results(_filename);
       
-      const char * _filenamechar = Gen_Seq_File_Names(charname, extension, width_seq, step_number);
-      write_char(_filenamechar, CValues, dt);
+      /*const char * _filenamechar = Gen_Seq_File_Names(charname, extension, width_seq, step_number);
+      write_char(_filenamechar, CValues, dt);//*/
     }
     t+=dt;
   } 
