@@ -1,3 +1,7 @@
+
+#ifndef __FE_DEFINITIONS_H__
+#define __FE_DEFINITIONS_H__
+
 #include<iostream>
 #include<iterator>
 
@@ -68,3 +72,7 @@ Number lax_friedrich(Number in, Number out, Number alpha, string &fluxtype, Numb
   Number flux;
   flux = 0.5*((out + in) + alpha*(eval_flux<Number>(out, fluxtype, a)- eval_flux<Number>(in, fluxtype, a)));
 };
+
+
+
+#endif

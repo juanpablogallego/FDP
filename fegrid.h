@@ -1,3 +1,7 @@
+
+#ifndef __FEGRID_H__
+#define __FEGRID_H__
+
 #include<iostream>
 #include<vector>
 
@@ -310,3 +314,6 @@ void FE_grid<Points, TypeBasisCoef>::set_coef_cell(int i, TypeBasisCoef & _coef)
   Cell<TypeBasisCoef> _cell= Grid[i];
   _cell.set_coef(_coef);
 };
+
+
+#endif

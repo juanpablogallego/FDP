@@ -1,4 +1,7 @@
 
+#ifndef __UTILITIES_H__
+#define __UTILITIES_H__
+
 #include<vector>
 #include<string>
 #include<sstream>
@@ -93,4 +96,4 @@ std::vector<std::vector<Number>> transpose(std::vector<std::vector<Number>>& );
 //template<typename Number>
 std::vector<std::vector<double> > LegendreCoefficients(int);
 
-
+#endif

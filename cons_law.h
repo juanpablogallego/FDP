@@ -1,6 +1,9 @@
 // Author:	Juan Pablo Gallego Valencia
 // Created:	June 2015
 
+#ifndef __CONS_LAW_H__
+#define __CONS_LAW_H__
+
 #include<iostream>
 #include<iterator>
 #include<cstdlib>
@@ -156,3 +159,4 @@ public:
   DG_Conservation_Laws(string& , string&, int , int, int );			// Constructors
 };
 
+#endif

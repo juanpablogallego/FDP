@@ -1,3 +1,7 @@
+
+#ifndef __OUTPUT_FNS_H__
+#define __OUTPUT_FNS_H__
+
 #include<iostream>
 #include<fstream>
 #include<string>
@@ -25,3 +29,5 @@ void output_fn(ofstream &printResults, string title, vector<vector<Datatype>> da
     printResults<< "\n";
   }
 };
+
+#endif
