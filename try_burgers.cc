@@ -8,7 +8,7 @@
 int main()
 {
 	//	Create the 1D grid
-      	FD_grid grid(-1,1,30);
+      	FD_grid grid(0,2*M_PI,200);
       	int dim=1;
 
 	//	Verify if the grid actually works
@@ -32,6 +32,9 @@ int main()
 	std::cout<<" \n		----------	Initial Condition	----------	 \n";
       	std::copy(state.begin(), state.end(), std::ostream_iterator<double>(std::cout, " "));
 	std::cout<<"\n";
+	
+	claw.run();
+	
       	return 0;
 }
 

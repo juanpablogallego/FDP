@@ -23,6 +23,14 @@ void eval_gaussian(std::vector<double> &x, std::vector<double> &u0)
   }
 };
 
+void eval_sin(std::vector<double> &x, std::vector<double> &u0)
+{
+  for(unsigned int i = 0; i < x.size(); i++)
+  {
+    u0.push_back(sin(x[i]));
+  }
+};
+
 double eval_step1D (double x)
 {
   double u0;
