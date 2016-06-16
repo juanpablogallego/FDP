@@ -11,8 +11,6 @@
 #include"PolySet.h"
 
 
-//#include"utilities.h"
-
 using namespace std;
 
 //template <typename Number>

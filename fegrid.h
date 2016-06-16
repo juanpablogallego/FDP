@@ -29,6 +29,7 @@ class Cell				// General class
 public:
   Cell();						// Constructors
   Cell(int&, vector<int>&,vector<int>&); 		// Put this line to add the coefficients , PolyBasisCoef
+  ~Cell();						// Destructor
   
   void set_corners(vector<int>&);			// Set functions
   void set_neighbours(vector<int>&);
@@ -67,6 +68,9 @@ Cell<PolyBasisCoef>::Cell ( int& _id, vector< int >& _corners, vector< int >& _n
   neighbors = _neighbors;
   //coef = _coef;
 };
+
+template<typename PolyBasisCoef>
+Cell<PolyBasisCoef>::~Cell(){};		// Default destructor
 
 
 //-----------------------------------------------------------
@@ -127,6 +131,7 @@ class Square : Cell<PolyBasisCoef>
 public:
   Square();
   Square(vector<int>&, vector< int >& , PolyBasisCoef );
+  ~Square();
 };
 
 template<typename PolyBasisCoef>
@@ -143,6 +148,9 @@ Square<PolyBasisCoef>::Square ( vector< int >& _corners, vector< int >& _neighbo
   neighbors = _neighbors;
   coef = _coef;
 };
+
+template<typename PolyBasisCoef>
+Square<PolyBasisCoef>::~Square(){};
 
 //--------------------------------------------------------------------------------------------------------------------
 //		Finite Element Grid
@@ -163,6 +171,8 @@ public:
     FE_grid ( double, double, int );
     FE_grid (vector<Points>&);
     FE_grid (vector<Points>&, vector<vector<int> >&);
+    ~FE_grid();
+    
     //FE_grid (vector<Points>&, vector<vector<int> >&, GeneralPolyBasis<TypeBasis, TypeBasisCoef>&);
     void set_nodes(vector<Points>&);
     void set_nodes_1d(double, double, int);
@@ -188,6 +198,10 @@ public:
     vector<int> get_corners(int);
 
 };
+
+//-----------------------------
+// Contructors and destructor
+//-----------------------------
 
 template <typename Points, typename TypeBasisCoef> //template <typename Points, typename TypeBasis, typename TypeBasisCoef>
 FE_grid<Points, TypeBasisCoef>::FE_grid()
@@ -221,6 +235,17 @@ FE_grid<Points, TypeBasisCoef>::FE_grid(vector<Points>& _nodes, vector<vector<in
   Triangulation = _triang;
 };
 
+template <typename Points, typename TypeBasisCoef> 	// Grid Destructor
+FE_grid<Points, TypeBasisCoef>::~FE_grid()
+{
+  std::cout<<"\n\t Eliminating the Grid object.\n";
+};
+
+
+//-----------------------------
+//	Get functions
+//-----------------------------
+
 template <typename Points, typename TypeBasisCoef> //template  <typename Points, typename TypeBasis, typename TypeBasisCoef>
 vector<Points> FE_grid<Points, TypeBasisCoef>::get_nodes()
 {
@@ -248,7 +273,9 @@ vector<int> FE_grid<Points, TypeBasisCoef>::get_corners(int i)
     return corners;
 };
 
-
+//-----------------------------
+//	Set functions
+//-----------------------------
 template <typename Points, typename TypeBasisCoef> //template  <typename Points, typename TypeBasis, typename TypeBasisCoef>
 void FE_grid<Points, TypeBasisCoef>::set_nodes_1d(double initial_node, double final_node, int num_nodes)
 {
@@ -266,7 +293,6 @@ void FE_grid<Points, TypeBasisCoef>::set_nodes_1d(double initial_node, double fi
   cout<< "\n \t Space between nodes: " << node_space;
 
 };
-
 
 template <typename Points, typename TypeBasisCoef> //template <typename Points, typename TypeBasis, typename TypeBasisCoef>
 void FE_grid<Points, TypeBasisCoef>::set_1d_grid()
