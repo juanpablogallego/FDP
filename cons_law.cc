@@ -129,7 +129,7 @@ void FD_Conservation_Laws::run()
   double t=0.0;
   
   std::string outputname = "burgers-";
-  //std::string charname = "burg_char-";
+  std::string charname = "burg_char-";
 
   std::string extension = ".dat";
 
@@ -171,7 +171,7 @@ void FD_Conservation_Laws::run()
       const char * _filename = Gen_Seq_File_Names(outputname, extension, width_seq, step_number);
       write_results(_filename);
       
-      /*const char * _filenamechar = Gen_Seq_File_Names(charname, extension, width_seq, step_number);
+      const char * _filenamechar = Gen_Seq_File_Names(charname, extension, width_seq, step_number);
       write_char(_filenamechar, CValues, dt);//*/
     }
     t+=dt;
