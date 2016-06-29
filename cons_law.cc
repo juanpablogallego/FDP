@@ -12,7 +12,9 @@
  */
 void FD_Conservation_Laws::set_ic(std::vector<double>& x, std::vector<double>& u0)
 {
-  eval_sin(x,u0);
+  //eval_sin(x,u0);
+  eval_step1D(x,u0);
+  //eval_gaussian(x,u0);
 };
 
 /*

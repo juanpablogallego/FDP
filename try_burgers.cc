@@ -8,11 +8,14 @@
 int main()
 {
 	//	Create the 1D grid
-      	FD_grid grid(0,2*M_PI,200);
+      	//FD_grid grid(0,2*M_PI,200);
+        FD_grid grid(-1,1,200);
       	int dim=1;
 
 	//	Verify if the grid actually works
 	int n=grid.get_num_nodes();
+	
+	/// Output grid
       	std::cout<<"Number of nodes: "<< n<<std::endl;
       	std::vector<double> v(n), dn;
       	grid.get_nodes(v);
